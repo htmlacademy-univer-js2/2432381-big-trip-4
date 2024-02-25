@@ -153,7 +153,7 @@ function editPointTemplate() {
       </section>
     </section>
   </form>
-</li>`
-};
+</li>`;
+}
 
 export { editPointTemplate };

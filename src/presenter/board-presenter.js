@@ -20,7 +20,7 @@ export default class BoardPresenter {
     render(new NewPoint(), this.eventListComponent.getElement());
 
     for(let i = 0; i < 3; i++){
-      render(new PointView(), this.eventListComponent.getElement())
+      render(new PointView(), this.eventListComponent.getElement());
     }
   }
 }

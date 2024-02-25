@@ -161,7 +161,7 @@ function addNewPoint() {
       </section>
     </section>
   </form>
-</li>`
-};
+</li>`;
+}
 
 export { addNewPoint };

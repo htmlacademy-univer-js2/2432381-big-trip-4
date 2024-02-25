@@ -27,4 +27,4 @@ function createListSortElement(){
 </form>`;
 }
 
-export {createListSortElement};
+export { createListSortElement };
