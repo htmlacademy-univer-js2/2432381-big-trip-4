@@ -3,18 +3,19 @@ import { createListFilterElement } from '../templates/filter-template';
 
 
 export default class ListFilterElement {
-  getFilter(){
+  getFilter() {
     return createListFilterElement();
   }
 
-  getElement(){
-    if(!this.element){
+  getElement() {
+    if(!this.element) {
       this.element = createElement(this.getFilter());
     }
+
     return this.element;
   }
-  
-  removeElement(){
+
+  removeElement() {
     this.element = null;
   }
 }

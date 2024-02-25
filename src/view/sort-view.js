@@ -2,18 +2,19 @@ import { createElement } from '../render';
 import { createListSortElement } from '../templates/sort-template';
 
 export default class ListSortElement {
-  getFilter(){
+  getFilter() {
     return createListSortElement();
   }
 
-  getElement(){
-    if(!this.element){
+  getElement() {
+    if(!this.element) {
       this.element = createElement(this.getFilter());
     }
+
     return this.element;
   }
-  
-  removeElement(){
+
+  removeElement() {
     this.element = null;
   }
 }
