@@ -1,5 +1,5 @@
-import { createElement } from "../render";
-import { editPointTemplate } from "../templates/edit-point-template";
+import { createElement } from '../render';
+import { editPointTemplate } from '../templates/edit-point-template';
 
 
 export default class EditPoint {

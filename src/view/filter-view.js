@@ -1,5 +1,5 @@
-import { createElement } from "../render";
-import { createListFilterElement } from "../templates/filter-template"
+import { createElement } from '../render';
+import { createListFilterElement } from '../templates/filter-template';
 
 
 export default class ListFilterElement {

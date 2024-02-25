@@ -1,5 +1,5 @@
-import { createElement } from "../render";
-import { createEventListTemplate } from "../templates/event-list-template";
+import { createElement } from '../render';
+import { createEventListTemplate } from '../templates/event-list-template';
 
 export default class EventListView {
   getFilter(){

@@ -1,5 +1,5 @@
-import { createElement } from "../render";
-import { addNewPoint } from "../templates/add-new-point-template";
+import { createElement } from '../render';
+import { addNewPoint } from '../templates/add-new-point-template';
 
 export default class NewPoint {
   getFilter(){

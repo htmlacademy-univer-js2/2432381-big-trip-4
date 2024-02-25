@@ -1,5 +1,5 @@
-import { createElement } from "../render";
-import { createPointTemplate } from "../templates/point-template";
+import { createElement } from '../render';
+import { createPointTemplate } from '../templates/point-template';
 
 export default class PointView {
   getFilter(){
