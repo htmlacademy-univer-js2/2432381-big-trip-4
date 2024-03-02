@@ -1,27 +1,40 @@
 import { render } from '../render';
+import NewPointView from '../view/add-new-point';
+import EditPointView from '../view/edit-point-view';
 import EventListView from '../view/event-list-view';
-import ListSortElement from '../view/sort-view';
-import NewPoint from '../view/add-new-point';
 import PointView from '../view/point-view';
-import EditPoint from '../view/edit-point-view';
+import ListSortElement from '../view/sort-view';
 
 export default class BoardPresenter {
-  sortComponent = new ListSortElement();
-  eventListComponent = new EventListView();
 
-  constructor({container}) {
-    this.container = container;
+  constructor({container, sortComponent, eventListComponent, editPoint, newPoint, pointView}) {
+    this.container = container; // контейнер
+    this.sortComponent = sortComponent || new ListSortElement(); // защитное программироване с оператором ||
+    this.eventListComponent = eventListComponent || new EventListView();
+    this.editPoint = editPoint || (() => new EditPointView());
+    this.newPoint = newPoint || (() => new NewPointView());
+    this.pointView = pointView || (() => new PointView());
   }
 
   init() {
+    this.renderComponents();
+  }
+
+  renderComponents() {
     render(this.sortComponent, this.container);
     render(this.eventListComponent, this.container);
 
-    render(new EditPoint(), this.eventListComponent.getElement());
-    render(new NewPoint(), this.eventListComponent.getElement());
+    this.renderDynamicComponents();
+  }
 
-    for(let i = 0; i < 3; i++) {
-      render(new PointView(), this.eventListComponent.getElement());
+  renderDynamicComponents() {
+    const eventListElement = this.eventListComponent.getElement();
+    render(this.editPoint(), eventListElement);
+    render(this.newPoint(), eventListElement);
+
+    const pointsCount = 3;
+    for (let i = 0; i < pointsCount; i++) {
+      render(this.pointView(), eventListElement);
     }
   }
 }

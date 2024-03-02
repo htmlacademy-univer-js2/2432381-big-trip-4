@@ -1,20 +1,8 @@
-import { createElement } from '../render';
+import BaseView from './view';
 import { createListSortElement } from '../templates/sort-template';
 
-export default class ListSortElement {
-  getFilter() {
-    return createListSortElement();
-  }
-
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getFilter());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+export default class ListSortElement extends BaseView {
+  constructor(){
+    super(createListSortElement);
   }
 }

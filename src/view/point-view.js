@@ -1,20 +1,7 @@
-import { createElement } from '../render';
+import BaseView from "./view";
 import { createPointTemplate } from '../templates/point-template';
-
-export default class PointView {
-  getFilter() {
-    return createPointTemplate();
-  }
-
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getFilter());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+export default class PointView extends BaseView {
+  constructor(){
+    super(createPointTemplate);
   }
 }
