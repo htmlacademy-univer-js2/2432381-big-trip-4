@@ -1,5 +1,5 @@
-import {getRandomArrayElement} from '../utils';
-import {TRANSPORT_IMAGES} from './const';
+import { getRandomArrayElement } from '../utils';
+import { TRANSPORT_IMAGES } from './const';
 
 const mockOffers = [
   {
@@ -41,7 +41,7 @@ const mockOffers = [
     type: getRandomArrayElement(TRANSPORT_IMAGES),
     offers: [
       {
-      id: 'b7c3e4e6-9053-42ce-b747-e281314baa31'
+        id: 'b7c3e4e6-9053-42ce-b747-e281314baa31'
       }
     ]
   },
@@ -51,4 +51,4 @@ function getOffer() {
   return mockOffers;
 }
 
-export {mockOffers, getOffer};
+export { mockOffers, getOffer };

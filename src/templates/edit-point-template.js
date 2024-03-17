@@ -1,11 +1,5 @@
 import { normalizeLongDayDate, GetTotalOffersPrice } from '../utils';
 
-/* function createElementFromHTML(htmlString) {
-  const div = document.createElement('div');
-  div.innerHTML = htmlString.trim();
-  return div.firstChild;
-} */
-
 function editPointTemplate(point, offer, destination) {
 
   const {dateFrom, dateTo, type} = point || {};
@@ -64,18 +58,6 @@ function editPointTemplate(point, offer, destination) {
       </div>
     </div>`;
 
-/*   let offersList = createElementFromHTML(offersHtml);
-  let offersItems = offersList.querySelectorAll('.event__offer-selector')
-  //console.log(offersList)
-  //console.log(offersItems)
-  for (let i = 0; i < offersItems.length; i++) {
-    for (let j = 0; j < offer.offers.length; j++) {
-      if (offersItems[i].querySelector('.event__offer-title').textContent === offer.offers[j].title) {
-        let checkbox = offersItems[i].querySelector('.event__offer-checkbox');
-        $(checkbox).attr('checked', 'checked');
-      }
-    }
-  } */
   const htmlStr =
     `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
