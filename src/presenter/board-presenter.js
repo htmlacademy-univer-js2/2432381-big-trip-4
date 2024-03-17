@@ -7,8 +7,11 @@ import ListSortElement from '../view/sort-view';
 
 export default class BoardPresenter {
 
-  constructor({container, sortComponent, eventListComponent, editPoint, newPoint, pointView}) {
-    this.container = container; // контейнер
+  constructor({container, sortComponent, eventListComponent, editPoint, newPoint, pointView, pointsModel, offersModel, destinationsModel}) {
+    this.container = container;
+    this.pointsModel = pointsModel;
+    this.offersModel = offersModel;
+    this.destinationsModel = destinationsModel;
     this.sortComponent = sortComponent || new ListSortElement(); // защитное программироване с оператором ||
     this.eventListComponent = eventListComponent || new EventListView();
     this.editPoint = editPoint || (() => new EditPointView());
@@ -17,6 +20,9 @@ export default class BoardPresenter {
   }
 
   init() {
+    this.boardPoints = [...this.pointsModel.getPoints()];
+    this.boardOffers = [...this.offersModel.getOffers()];
+    this.boardDestinations = [...this.destinationsModel.getDestinations()];
     this.renderComponents();
   }
 
@@ -29,12 +35,16 @@ export default class BoardPresenter {
 
   renderDynamicComponents() {
     const eventListElement = this.eventListComponent.getElement();
-    render(this.editPoint(), eventListElement);
+    render(new EditPointView({point: this.boardPoints[0], offer: this.boardOffers.find((x) => x.offers[0].id === this.boardPoints[0].offers[0]),
+      destination: this.boardDestinations.find((x) => x.id === this.boardPoints[0].destination)}), eventListElement);
     render(this.newPoint(), eventListElement);
 
-    const pointsCount = 3;
-    for (let i = 0; i < pointsCount; i++) {
-      render(this.pointView(), eventListElement);
+    for (let i = 0; i < this.boardPoints.length; i++) {
+
+      const offer = this.boardOffers.find((x) => x.offers[0].id === this.boardPoints[i].offers[0]);
+      const dest = this.boardDestinations.find((x) => x.id === this.boardPoints[i].destination);
+
+      render(new PointView({point: this.boardPoints[i], offer: offer, destination: dest}), eventListElement);
     }
   }
 }
