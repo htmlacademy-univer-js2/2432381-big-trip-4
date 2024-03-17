@@ -1,5 +1,4 @@
 import { render } from '../render';
-import { getRandomArrayElement } from '../utils';
 import NewPointView from '../view/add-new-point';
 import EditPointView from '../view/edit-point-view';
 import EventListView from '../view/event-list-view';

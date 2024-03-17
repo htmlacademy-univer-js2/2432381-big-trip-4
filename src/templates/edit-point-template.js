@@ -1,4 +1,4 @@
-import { normalizeLongDayDate, GetTotalOffersPrice } from "../utils";
+import { normalizeLongDayDate, GetTotalOffersPrice } from '../utils';
 
 function createElementFromHTML(htmlString) {
   const div = document.createElement('div');
@@ -8,19 +8,15 @@ function createElementFromHTML(htmlString) {
 
 function editPointTemplate(point, offer, destination) {
 
-  const {date_from, date_to, type} = point || {};
+  const {dateFrom, dateTo, type} = point || {};
   const {description, name} = destination || {};
-  //const {title} = offer.offers[0] || {};
-
-  //console.log(title)
 
   const totalOffersPrice = GetTotalOffersPrice(offer);
 
+  this.dateFrom = normalizeLongDayDate(dateFrom);
+  this.dateTo = normalizeLongDayDate(dateTo);
 
-  const dateFrom = normalizeLongDayDate(date_from);
-  const dateTo = normalizeLongDayDate(date_to);
-
-  let offersHtml = `<div class="event__available-offers">
+  const offersHtml = `<div class="event__available-offers">
       <div class="event__offer-selector">
         <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage">
         <label class="event__offer-label" for="event-offer-luggage-1">
@@ -31,7 +27,7 @@ function editPointTemplate(point, offer, destination) {
       </div>
 
       <div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
         <label class="event__offer-label" for="event-offer-comfort-1">
           <span class="event__offer-title">Switch to comfort</span>
           &plus;&euro;&nbsp;
@@ -66,7 +62,7 @@ function editPointTemplate(point, offer, destination) {
         </label>
       </div>
     </div>`;
-  let offersList = createElementFromHTML(offersHtml);
+/*   let offersList = createElementFromHTML(offersHtml);
   let offersItems = offersList.querySelectorAll('.event__offer-selector')
   //console.log(offersList)
   //console.log(offersItems)
@@ -77,7 +73,7 @@ function editPointTemplate(point, offer, destination) {
         $(checkbox).attr('checked', 'checked');
       }
     }
-  }
+  } */
 
 
   const htmlStr = `<li class="trip-events__item">
@@ -156,10 +152,10 @@ function editPointTemplate(point, offer, destination) {
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateFrom}">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${this.dateFrom}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateTo}">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${this.dateTo}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -191,4 +187,4 @@ function editPointTemplate(point, offer, destination) {
 return htmlStr;
 }
 
-export { editPointTemplate };
+export {editPointTemplate};

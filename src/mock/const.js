@@ -24,7 +24,7 @@ const CITIES = [
   'Chicago',
   'Dubai',
   'Helsinki',
-]
+];
 
 const OFFERS = [
   {ofName: 'Add luggage', price: 30},
@@ -32,6 +32,6 @@ const OFFERS = [
   {ofName: 'Add meal', price: 15},
   {ofName: 'Choose seats', price: 5},
   {ofName: 'Travel by train', price: 40},
-]
+];
 
-export { TRANSPORT_IMAGES, CITIES, OFFERS };
+export {TRANSPORT_IMAGES, CITIES, OFFERS};

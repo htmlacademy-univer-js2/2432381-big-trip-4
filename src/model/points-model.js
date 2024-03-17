@@ -6,7 +6,7 @@ const POINTS_COUNT = 3;
 export default class PointsModel {
   points = Array.from({length: POINTS_COUNT}, getRandomPoint);
 
-  getPoints() {
+  getPoints(){
     this.points = sortPointsArr(this.points);
     return this.points;
   }

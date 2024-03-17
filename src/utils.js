@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
 const DAY_DATE_FORMAT = 'MMM D';
 const HOUR_DATE_FORMAT = 'HH:mm';
@@ -19,11 +19,11 @@ function sortPointsArr(points) {
 }
 
 function GetTotalOffersPrice(offers) {
-  let ofLength = offers.offers.length;
+  const ofLength = offers.offers.length;
   let totalPrice = 0;
   switch(true) {
     case(ofLength === 0):
-      totalPrice;
+      totalPrice = totalPrice;
       break;
     case(ofLength === 1):
       totalPrice = offers.offers[0].price;
@@ -47,9 +47,9 @@ function normalizeLongDayDate(date) {
   return date ? dayjs(date).format(LONG_DAY_DATE_FROMAT) : '';
 }
 
-function TimeDifference(date_to, date_from) {
+function TimeDifference(dateTo, dateFrom) {
 
-  const dif = dayjs(date_to).diff(dayjs(date_from), 'm');
+  const dif = dayjs(dateTo).diff(dayjs(dateFrom), 'm');
   const hh = Math.floor(dif / 60);
   const dd = Math.floor(hh / 24);
   const mm = dif % 60;
@@ -70,4 +70,4 @@ function createElementFromHTML(htmlString) {
   return div.firstChild;
 }
 
-export { getRandomArrayElement, normalizeDate, normalizeHour, TimeDifference, normalizeLongDayDate, getRandomInt, sortPointsArr, GetTotalOffersPrice, createElementFromHTML };
+export {getRandomArrayElement, normalizeDate, normalizeHour, TimeDifference, normalizeLongDayDate, getRandomInt, sortPointsArr, GetTotalOffersPrice, createElementFromHTML};
