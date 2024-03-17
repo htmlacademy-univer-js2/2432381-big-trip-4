@@ -1,7 +1,7 @@
 import { createElement } from '../render';
 
 export default class BaseView {
-  constructor(getTemplateCallback, point, offer,  destination){
+  constructor(getTemplateCallback, point, offer, destination){
     this.getTemplateCallback = getTemplateCallback;
     this.point = point;
     this.offer = offer;

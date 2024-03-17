@@ -20,10 +20,10 @@ function sortPointsArr(points) {
 
 function GetTotalOffersPrice(offers) {
   const ofLength = offers.offers.length;
-  let totalPrice = 0;
+  let totalPrice;
   switch(true) {
     case(ofLength === 0):
-      totalPrice = totalPrice;
+      totalPrice = 0;
       break;
     case(ofLength === 1):
       totalPrice = offers.offers[0].price;
@@ -55,19 +55,13 @@ function TimeDifference(dateTo, dateFrom) {
   const mm = dif % 60;
 
   if (dif < 60) {
-    return dif + 1 + 'M';
+    return `${dif + 1}M`;
   } else if (dif >= 60 && dif < 1440) {
-    return hh + 'H ' + (mm + 1) + 'M';
+    return `${hh}H ${(mm + 1)}M`;
   } else if (dif >= 1440) {
-    return dd + 'D ' + (hh % 24) + 'H ' + (mm + 1) + 'M';
+    return `${dd}D ${(hh % 24)}H ${(mm + 1)}M`;
   }
   return dif;
 }
 
-function createElementFromHTML(htmlString) {
-  const div = document.createElement('div');
-  div.innerHTML = htmlString.trim();
-  return div.firstChild;
-}
-
-export {getRandomArrayElement, normalizeDate, normalizeHour, TimeDifference, normalizeLongDayDate, getRandomInt, sortPointsArr, GetTotalOffersPrice, createElementFromHTML};
+export {getRandomArrayElement, normalizeDate, normalizeHour, TimeDifference, normalizeLongDayDate, getRandomInt, sortPointsArr, GetTotalOffersPrice};

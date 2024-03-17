@@ -1,13 +1,11 @@
 import { normalizeDate, normalizeHour, TimeDifference } from '../utils';
 
-
-
 function createPointTemplate(point, offer){
 
-  const {dateFrom, dateTo, type, basePrice, isFavorite, } = point || {};
+  const {dateFrom, dateTo, type, basePrice, isFavorite} = point || {};
 
   const elOffers = [];
-  for(let  i = 0; i < offer.offers.length; i++) {
+  for(let i = 0; i < offer.offers.length; i++) {
     elOffers.push(`<li class="event__offer">
     <span class="event__offer-title">${offer.offers[i].title === undefined ? '' : offer.offers[i].title}</span>
     ${offer.offers[i].title === undefined ? '' : '&plus;&euro;&nbsp'}
