@@ -1,4 +1,4 @@
-import { render, remove, replace } from '../framework/render';
+import { render, replace } from '../framework/render';
 import NewPointView from '../view/add-new-point';
 import EditPointView from '../view/edit-point-view';
 import EventListView from '../view/event-list-view';
@@ -13,6 +13,7 @@ export default class BoardPresenter {
   #sortComponent = null;
   #eventListComponent = null;
   #newPoint = null;
+  #isOpenEditForm = false;
 
   #boardPoints = [];
   #boardOffers = [];
@@ -44,53 +45,56 @@ export default class BoardPresenter {
     this.#renderDynamicComponents();
   }
 
+  #renderPoint(point, offer, destination) {
+
+    const escapeKeyDownHandler = (evt) => {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        replaceFormToPoint();
+        this.#isOpenEditForm = false;
+        document.removeEventListener('keydown', escapeKeyDownHandler);
+      }
+    };
+    const pointComponent = new PointView({
+      point,
+      offer,
+      onEditClick: () => {
+        if (this.#isOpenEditForm === false) {
+          replacePointToForm();
+          this.#isOpenEditForm = true;
+          document.addEventListener('keydown', escapeKeyDownHandler);
+        }
+      }
+    });
+
+    const pointEditComponent = new EditPointView({
+      point,
+      offer,
+      destination,
+      onFormSubmit: () => {
+        replaceFormToPoint();
+        this.#isOpenEditForm = false;
+        document.addEventListener('keydown', escapeKeyDownHandler);
+      }
+    });
+
+    const replacePointToForm = () => {
+      replace(pointEditComponent, pointComponent);
+    };
+
+    const replaceFormToPoint = () => {
+      replace(pointComponent, pointEditComponent);
+    };
+    render(pointComponent, this.#eventListComponent.element);
+  }
   #renderDynamicComponents() {
-    const eventListElement = this.#eventListComponent.element;
+    render(this.#newPoint(), this.#eventListComponent.element);
 
-    render(this.#newPoint(), eventListElement);
-
-    let isOpenEditForm = false;
     for (let i = 0; i < this.#boardPoints.length; i++) {
-
       const offer = this.#boardOffers.find((x) => x.offers[0].id === this.#boardPoints[i].offers[0]);
       const dest = this.#boardDestinations.find((x) => x.id === this.#boardPoints[i].destination);
 
-      const escapeKeyDownHandler = (evt) => {
-        if(evt.key === 'Escape') {
-          evt.preventDefault();
-          replaceFormToPoint();
-          isOpenEditForm = false;
-          document.removeEventListener('keydown', escapeKeyDownHandler)
-        }
-      }
-
-      const pointComponent = new PointView({point: this.#boardPoints[i], offer: offer, destination: dest,
-        onEditClick: () => {
-          if(isOpenEditForm === false){
-            replacePointToForm();
-            isOpenEditForm = true;
-          }
-          document.addEventListener('keydown', escapeKeyDownHandler);
-        }
-      });
-
-      const pointEditComponent = new EditPointView({point: this.#boardPoints[i], offer: offer, destination: dest,
-        onFormSubmit: () => {
-          replaceFormToPoint();
-          isOpenEditForm = false;
-          document.addEventListener('keydown', escapeKeyDownHandler);
-        }
-      });
-
-      function replacePointToForm() {
-        replace(pointEditComponent, pointComponent);
-      }
-
-      function replaceFormToPoint() {
-        replace(pointComponent, pointEditComponent);
-      }
-
-      render(pointComponent, eventListElement);
+      this.#renderPoint(this.#boardPoints[i], offer, dest);
     }
   }
 }

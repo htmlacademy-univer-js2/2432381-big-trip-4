@@ -1,10 +1,11 @@
 import { normalizeDate, normalizeHour, timeDifference } from '../utils/task';
 
-export const createPointTemplate = (point, offer) => {
+function createPointTemplate (point, offer) {
 
   const {dateFrom, dateTo, type, basePrice, isFavorite} = point || {};
 
   const elOffers = [];
+  //console.log(offer[2].offers)
   for(let i = 0; i < offer.offers.length; i++) {
     elOffers.push(`<li class="event__offer">
     <span class="event__offer-title">${offer.offers[i].title === undefined ? '' : offer.offers[i].title}</span>
@@ -53,4 +54,6 @@ export const createPointTemplate = (point, offer) => {
     </button>
   </div>
 </li>`;
-};
+}
+
+export { createPointTemplate };
