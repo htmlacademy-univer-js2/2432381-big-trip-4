@@ -1,13 +1,13 @@
 import { normalizeLongDayDate, getTotalOffersPrice} from '../utils/task';
 
-function editPointTemplate(point, offer, destination) {
+export const editPointTemplate = (point, offer, destination) => {
 
   const {dateFrom, dateTo, type} = point || {};
   const {description, name} = destination || {};
 
   const totalOffersPrice = getTotalOffersPrice(offer);
-  const dateF = normalizeLongDayDate(dateFrom)
-  const dateT = normalizeLongDayDate(dateTo)
+  const dateF = normalizeLongDayDate(dateFrom);
+  const dateT = normalizeLongDayDate(dateTo);
 
   const offersHtml =
     `<div class="event__available-offers">
@@ -167,6 +167,5 @@ function editPointTemplate(point, offer, destination) {
       </form>
     </li>`;
   return htmlStr;
-}
+};
 
-export {editPointTemplate};

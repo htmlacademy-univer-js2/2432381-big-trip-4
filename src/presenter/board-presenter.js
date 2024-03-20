@@ -59,23 +59,28 @@ export default class BoardPresenter {
         if(evt.key === 'Escape') {
           evt.preventDefault();
           replaceFormToPoint();
+          isOpenEditForm = false;
           document.removeEventListener('keydown', escapeKeyDownHandler)
         }
       }
 
-      const pointComponent = new PointView({point: this.#boardPoints[i], offer: offer, destination: dest, onEditClick: () => {
-        if(isOpenEditForm === false){
-          replacePointToForm();
-          isOpenEditForm = true;
+      const pointComponent = new PointView({point: this.#boardPoints[i], offer: offer, destination: dest,
+        onEditClick: () => {
+          if(isOpenEditForm === false){
+            replacePointToForm();
+            isOpenEditForm = true;
+          }
+          document.addEventListener('keydown', escapeKeyDownHandler);
         }
-        document.addEventListener('keydown', escapeKeyDownHandler);
-      }});
+      });
 
-      const pointEditComponent = new EditPointView({point: this.#boardPoints[i], offer: offer, destination: dest, onFormSubmit: () => {
-        replaceFormToPoint();
-        isOpenEditForm = false;
-        document.addEventListener('keydown', escapeKeyDownHandler);
-      }});
+      const pointEditComponent = new EditPointView({point: this.#boardPoints[i], offer: offer, destination: dest,
+        onFormSubmit: () => {
+          replaceFormToPoint();
+          isOpenEditForm = false;
+          document.addEventListener('keydown', escapeKeyDownHandler);
+        }
+      });
 
       function replacePointToForm() {
         replace(pointEditComponent, pointComponent);
@@ -89,3 +94,5 @@ export default class BoardPresenter {
     }
   }
 }
+
+

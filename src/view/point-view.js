@@ -1,7 +1,7 @@
-import { createPointTemplate, openEditForm } from '../templates/point-template';
+import { createPointTemplate } from '../templates/point-template';
 import AbstractView from '../framework/view/abstract-view';
 
-export default class PointView extends AbstractView{
+export default class PointView extends AbstractView {
   #point = null;
   #offer = null;
   #handleEditClick = null;
@@ -12,15 +12,15 @@ export default class PointView extends AbstractView{
     this.#offer = offer;
 
     this.#handleEditClick = onEditClick;
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler)
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
   }
 
   get template() {
     return createPointTemplate(this.#point, this.#offer);
   }
 
-  #editClickHandler = (evt, isEditWindowOpened) => {
+  #editClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleEditClick();
-  }
+  };
 }

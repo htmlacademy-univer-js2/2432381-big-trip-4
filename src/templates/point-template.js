@@ -53,4 +53,4 @@ export const createPointTemplate = (point, offer) => {
     </button>
   </div>
 </li>`;
-}
+};
