@@ -1,14 +1,13 @@
-import { normalizeLongDayDate, GetTotalOffersPrice } from '../utils';
+import { normalizeLongDayDate, getTotalOffersPrice} from '../utils/task';
 
-function editPointTemplate(point, offer, destination) {
+export const editPointTemplate = (point, offer, destination) => {
 
   const {dateFrom, dateTo, type} = point || {};
   const {description, name} = destination || {};
 
-  const totalOffersPrice = GetTotalOffersPrice(offer);
-
-  this.dateFrom = normalizeLongDayDate(dateFrom);
-  this.dateTo = normalizeLongDayDate(dateTo);
+  const totalOffersPrice = getTotalOffersPrice(offer);
+  const dateF = normalizeLongDayDate(dateFrom);
+  const dateT = normalizeLongDayDate(dateTo);
 
   const offersHtml =
     `<div class="event__available-offers">
@@ -135,10 +134,10 @@ function editPointTemplate(point, offer, destination) {
 
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${this.dateFrom}">
+            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateF === undefined ? '' : dateF}">
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">To</label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${this.dateTo}">
+            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateT === undefined ? '' : dateT}">
           </div>
 
           <div class="event__field-group  event__field-group--price">
@@ -168,6 +167,5 @@ function editPointTemplate(point, offer, destination) {
       </form>
     </li>`;
   return htmlStr;
-}
+};
 
-export {editPointTemplate};

@@ -44,7 +44,6 @@ const mockDestinations = [
     ]
   },
 ];
-
 function getDestination() {
   return mockDestinations;
 }

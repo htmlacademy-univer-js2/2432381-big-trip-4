@@ -1,9 +1,9 @@
-import BaseView from './view';
 import { createListFilterElement } from '../templates/filter-template';
+import AbstractView from '../framework/view/abstract-view';
 
-export default class ListFilterElement extends BaseView {
-  constructor(){
-    super(createListFilterElement);
+export default class ListFilterElement extends AbstractView{
+  get template() {
+    return createListFilterElement();
   }
 }
 

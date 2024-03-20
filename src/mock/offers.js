@@ -1,4 +1,4 @@
-import { getRandomArrayElement } from '../utils';
+import { getRandomArrayElement } from '../utils/common.js';
 import { TRANSPORT_IMAGES } from './const';
 
 const mockOffers = [
