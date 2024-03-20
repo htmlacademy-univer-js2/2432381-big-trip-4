@@ -1,6 +1,6 @@
-import { normalizeDate, normalizeHour, TimeDifference } from '../utils';
+import { normalizeDate, normalizeHour, timeDifference } from '../utils/task';
 
-function createPointTemplate(point, offer){
+export const createPointTemplate = (point, offer) => {
 
   const {dateFrom, dateTo, type, basePrice, isFavorite} = point || {};
 
@@ -13,16 +13,16 @@ function createPointTemplate(point, offer){
     </li>`);
   }
 
-  this.dateFrom = normalizeDate(dateFrom);
+  const date = normalizeDate(dateFrom);
   const dateFromDur = normalizeHour(dateFrom);
   const dateToDur = normalizeHour(dateTo);
-  const duration = TimeDifference(dateTo, dateFrom);
+  const duration = timeDifference(dateTo, dateFrom);
 
-  this.isFavorite = isFavorite === true ? 'active' : 'disabled';
+  const isF = isFavorite === true ? 'active' : 'disabled';
 
   return `<li class="trip-events__item">
   <div class="event">
-    <time class="event__date" datetime="${this.dateFrom}">${this.dateFrom}</time>
+    <time class="event__date" datetime="${date}">${date}</time>
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src='img/icons/${type}.png' alt="Event type icon">
     </div>
@@ -42,7 +42,7 @@ function createPointTemplate(point, offer){
     <ul class="event__selected-offers">
       ${elOffers.join('')}
     </ul>
-    <button class="event__favorite-btn event__favorite-btn--${this.isFavorite}" type="button">
+    <button class="event__favorite-btn event__favorite-btn--${isF}" type="button">
       <span class="visually-hidden">Add to favorite</span>
       <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
         <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -54,5 +54,3 @@ function createPointTemplate(point, offer){
   </div>
 </li>`;
 }
-
-export {createPointTemplate};

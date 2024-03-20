@@ -1,8 +1,8 @@
-import BaseView from './view';
 import { createEventListTemplate } from '../templates/event-list-template';
+import AbstractView from '../framework/view/abstract-view';
 
-export default class EventListView extends BaseView {
-  constructor(){
-    super(createEventListTemplate);
+export default class EventListView extends AbstractView {
+  get template() {
+    return createEventListTemplate();
   }
 }

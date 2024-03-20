@@ -1,8 +1,8 @@
-import BaseView from './view';
 import { createMainInfo } from '../templates/info-template';
+import AbstractView from '../framework/view/abstract-view';
 
-export default class MainInfo extends BaseView {
-  constructor(){
-    super(createMainInfo);
+export default class MainInfo extends AbstractView {
+  get template() {
+    return createMainInfo();
   }
 }

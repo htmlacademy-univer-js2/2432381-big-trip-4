@@ -1,5 +1,5 @@
 import ListFilterElement from './view/filter-view';
-import {render, RenderPosition} from './render';
+import { render, RenderPosition } from './framework/render';
 import BoardPresenter from './presenter/board-presenter';
 import MainInfo from './view/info-view';
 import PointsModel from './model/points-model';
