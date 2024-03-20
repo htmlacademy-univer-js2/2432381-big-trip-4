@@ -78,15 +78,16 @@ export default class BoardPresenter {
       }
     });
 
-    const replacePointToForm = () => {
+    function replacePointToForm () {
       replace(pointEditComponent, pointComponent);
-    };
+    }
 
-    const replaceFormToPoint = () => {
+    function replaceFormToPoint () {
       replace(pointComponent, pointEditComponent);
-    };
+    }
     render(pointComponent, this.#eventListComponent.element);
   }
+
   #renderDynamicComponents() {
     render(this.#newPoint(), this.#eventListComponent.element);
 
