@@ -1,14 +1,14 @@
 import { editPointTemplate } from '../templates/edit-point-template';
 import AbstractView from '../framework/view/abstract-view';
 
-export default class EditPointView extends AbstractView{
+export default class EditPointView extends AbstractView {
   #point = null;
   #offer = null;
   #destination = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
 
-  constructor({point, offer, destination, onFormSubmit, onFormClose}){
+  constructor({ point, offer, destination, onFormSubmit, onFormClose }) {
     super();
     this.#point = point;
     this.#offer = offer;
@@ -29,7 +29,7 @@ export default class EditPointView extends AbstractView{
     evt.preventDefault();
     this.#handleFormSubmit();
   };
-  
+
   #formcloseHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormClose();
