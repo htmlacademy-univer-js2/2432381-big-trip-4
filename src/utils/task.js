@@ -1,11 +1,20 @@
 import dayjs from 'dayjs';
 
 const DAY_DATE_FORMAT = 'MMM D';
+const DAY_FORMAT = 'D';
 const HOUR_DATE_FORMAT = 'HH:mm';
 const LONG_DAY_DATE_FROMAT = 'DD/MM/YY HH:mm';
 
 function normalizeDate (date) {
   return date ? dayjs(date).format(DAY_DATE_FORMAT) : '';
+}
+
+function normalizeDay (date1, date2) {
+  //return date ? dayjs(date).format(DAY_FORMAT) : '';
+  if(dayjs(date1).format('MMM') === dayjs(date2).format('MMM')){
+    return date2 ? dayjs(date2).format(DAY_FORMAT) : '';
+  }
+  return date2 ? dayjs(date2).format(DAY_DATE_FORMAT) : '';
 }
 
 function normalizeHour (date) {
@@ -51,7 +60,7 @@ export const getTotalOffersPrice = (offers) => {
 };
 
 function sortPointsArr (points) {
-  return points.sort((a, b) => dayjs(a.dateFrom) - dayjs(b.dateFrom));
+  return points.sort((a, b) => dayjs(b.dateFrom) - dayjs(a.dateFrom));
 }
 
-export { sortPointsArr, normalizeDate, normalizeHour, normalizeLongDayDate };
+export { sortPointsArr, normalizeDate, normalizeHour, normalizeLongDayDate, normalizeDay };
