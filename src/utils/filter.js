@@ -1,4 +1,4 @@
-import { FilterType } from "../mock/const";
+import { FilterType } from '../mock/const';
 
 const filter = {
   [FilterType.EVERYTHING]: (points) => points.filter((point) => point),

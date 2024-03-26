@@ -12,6 +12,7 @@ export default class MainInfo extends AbstractView {
     this.#offers = offers;
     this.#dests = dests;
   }
+  
   get template() {
     return createMainInfo({points: this.#points} , this.#offers, this.#dests);
   }

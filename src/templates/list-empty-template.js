@@ -1,7 +1,7 @@
-import { EmptyFilter } from "../mock/const";
+import { EmptyFilter } from '../mock/const';
 
 function createListEmpty() {
-  const {type, emptyMsg} = EmptyFilter;
+  //const {type, emptyMsg} = EmptyFilter;
   return `<main class="page-body__page-main  page-main">
   <div class="page-body__container">
     <section class="trip-events">

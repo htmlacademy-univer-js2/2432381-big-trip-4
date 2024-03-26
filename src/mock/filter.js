@@ -1,9 +1,12 @@
-import { filter } from "../utils/filter";
+import { filter } from '../utils/filter';
 
-function generateFilter(points) {
+//points
+//filterPoint
+
+function generateFilter() {
   return Object.entries(filter)
     .map(
-      ([filterType, filterPoint]) => ({
+      ([filterType]) => ({
         type: filterType,
       }),
     );

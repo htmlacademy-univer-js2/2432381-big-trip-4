@@ -8,6 +8,7 @@ export default class ListFilterElement extends AbstractView {
     super();
     this.#filters = filters;
   }
+  
   get template() {
     return createListFilterElement(this.#filters);
   }

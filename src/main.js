@@ -1,7 +1,6 @@
 import ListFilterElement from './view/filter-view';
-import { render, RenderPosition } from './framework/render';
+import { render } from './framework/render';
 import BoardPresenter from './presenter/board-presenter';
-import MainInfo from './view/info-view';
 import PointsModel from './model/points-model';
 import DestinationsModel from './model/destinations-model';
 import OffersModel from './model/offers-model';
@@ -28,7 +27,7 @@ const boardPresenter = new BoardPresenter({
 });
 
 if(pointsModel.points.length === 0){
-  mainElement.innerHTML = new ListEmpty().template
+  mainElement.innerHTML = new ListEmpty().template;
 }
 render(new ListFilterElement({filters}), siteListFilter);
 
