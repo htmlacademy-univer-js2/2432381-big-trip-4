@@ -23,7 +23,7 @@ export default class BoardPresenter {
   #boardOffers = [];
   #boardDestinations = [];
 
-  constructor({container, headerContainer, sortComponent, eventListComponent, editPoint, newPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, listEmpty}) {
+  constructor({container, headerContainer, sortComponent, eventListComponent, editPoint, newPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, listEmpty, filters}) {
     this.#container = container;
     this.#headerContainer = headerContainer;
     this.#pointsModel = pointsModel;
@@ -101,8 +101,6 @@ export default class BoardPresenter {
   }
 
   #renderDynamicComponents() {
-    //render(this.#newPoint(), this.#eventListComponent.element);
-    //console.log(this.#boardPoints[0])
     const sortedOffers = [];
     const sortedDests = [];
 

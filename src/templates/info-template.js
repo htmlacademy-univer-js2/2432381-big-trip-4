@@ -8,12 +8,13 @@ function createMainInfo(points, offers, dests){
 
   const pricesArr = [];
   points.points.forEach((x) => pricesArr.push(x.basePrice));
-  offers.forEach((x) => x.offers.forEach((y) => { if(y.price !== undefined){pricesArr.push(y.price);}}));
+  offers.forEach((x) => x.offers.forEach((y) => { if(y.price !== undefined){pricesArr.push(y.price);} }));
 
   const totalPrice = pricesArr.reduce((x, y) => x + y);
 
   const firstDate = normalizeDate(points.points[points.points.length - 1].dateFrom);
   const lastDate = normalizeDay(points.points[points.points.length - 1].dateFrom, points.points[0].dateFrom);
+
   return `<section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">
       <h1 class="trip-info__title">${firstDest} &mdash; ${midDest} &mdash; ${lastDest}</h1>

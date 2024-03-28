@@ -1,18 +1,16 @@
+
+
 function createFilterItemTemplate(filter, isChecked) {
-  const {type} = filter;
-  //if(filter)
-  //console.log(filter)
-  //const arr = []
-  //console.log(arr.length === 0 ? 'dsdsadsadsa' : arr.filter((x) => x))
+  const {type, count } = filter;
   return `<div class="trip-filters__filter">
-  <input id="filter-${type}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${type} ${isChecked ? 'checked' : ''}">
+  <input id="filter-${type}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${type}" ${isChecked ? 'checked' : ''} ${count === 0 ? 'disabled' : ''}>
   <label class="trip-filters__filter-label" for="filter-${type}">${type}</label>
   </div>`;
 }
 
 function createListFilterElement(filters){
   const filterItemsTemplate = filters
-    .map((filter) => createFilterItemTemplate(filter))
+    .map((filter, index) => createFilterItemTemplate(filter, index === 0))
     .join('');
   return `<form class="trip-filters" action="#" method="get">
     ${filterItemsTemplate}

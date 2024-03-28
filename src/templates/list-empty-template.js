@@ -1,13 +1,12 @@
-import { EmptyFilter } from '../mock/const';
+function createListEmpty(filters) {
+  const {count, txtMsg} = filters[0];
 
-function createListEmpty() {
-  //const {type, emptyMsg} = EmptyFilter;
   return `<main class="page-body__page-main  page-main">
   <div class="page-body__container">
     <section class="trip-events">
       <h2 class="visually-hidden">Trip events</h2>
 
-      <p class="trip-events__msg">${EmptyFilter[3].emptyMsg}</p>
+      <p class="trip-events__msg">${txtMsg}</p>
 
       <!--
         Значение отображаемого текста зависит от выбранного фильтра:

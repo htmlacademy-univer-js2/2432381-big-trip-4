@@ -1,9 +1,15 @@
 import dayjs from 'dayjs';
 
+var utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
+
 const DAY_DATE_FORMAT = 'MMM D';
 const DAY_FORMAT = 'D';
 const HOUR_DATE_FORMAT = 'HH:mm';
+const DATE_FORMAT = 'DD/MM/YY';
 const LONG_DAY_DATE_FROMAT = 'DD/MM/YY HH:mm';
+const NOW = dayjs();
+
 
 function normalizeDate (date) {
   return date ? dayjs(date).format(DAY_DATE_FORMAT) : '';
@@ -59,8 +65,20 @@ export const getTotalOffersPrice = (offers) => {
   return totalPrice;
 };
 
+const futureFilterPoints = (point) => {
+  return dayjs().isBefore(point.dateFrom);
+}
+
+const pastFilterPoints = (point) => {
+  return dayjs().isAfter(point.dateTo);
+}
+
+const presentFilterPoints = (point) => {
+  return (dayjs().isAfter(point.dateFrom) && dayjs().isBefore(point.dateTo));
+}
+
 function sortPointsArr (points) {
   return points.sort((a, b) => dayjs(b.dateFrom) - dayjs(a.dateFrom));
 }
 
-export { sortPointsArr, normalizeDate, normalizeHour, normalizeLongDayDate, normalizeDay };
+export { sortPointsArr, normalizeDate, normalizeHour, normalizeLongDayDate, normalizeDay, futureFilterPoints, presentFilterPoints, NOW, pastFilterPoints };
