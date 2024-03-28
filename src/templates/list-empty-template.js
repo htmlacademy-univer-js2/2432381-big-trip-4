@@ -1,5 +1,5 @@
 function createListEmpty(filters) {
-  const {count, txtMsg} = filters[0];
+  const { txtMsg } = filters[0];
 
   return `<main class="page-body__page-main  page-main">
   <div class="page-body__container">

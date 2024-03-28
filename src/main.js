@@ -9,7 +9,6 @@ import { generateFilter } from './mock/filter';
 
 const bodyElement = document.querySelector('body');
 const headerElement = bodyElement.querySelector('.page-header');
-const bodyCont = document.querySelector('.page-body__container');
 const mainElement = bodyElement.querySelector('.page-main');
 const siteListFilter = headerElement.querySelector('.trip-controls__filters');
 const tripMain = headerElement.querySelector('.trip-main');

@@ -1,5 +1,4 @@
 import { getRandomArrayElement } from '../utils/common';
-import { NOW } from '../utils/task';
 
 const mockPoints = [
   {

@@ -1,4 +1,4 @@
-import { normalizeDate, normalizeHour, timeDifference, everythingFilterPoints } from '../utils/task';
+import { normalizeDate, normalizeHour, timeDifference } from '../utils/task';
 
 function createPointTemplate (point, offer) {
   const {dateFrom, dateTo, type, basePrice, isFavorite} = point || {};

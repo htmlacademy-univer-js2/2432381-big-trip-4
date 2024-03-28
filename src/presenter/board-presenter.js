@@ -23,7 +23,7 @@ export default class BoardPresenter {
   #boardOffers = [];
   #boardDestinations = [];
 
-  constructor({container, headerContainer, sortComponent, eventListComponent, editPoint, newPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, listEmpty, filters}) {
+  constructor({container, headerContainer, sortComponent, eventListComponent, editPoint, newPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, listEmpty}) {
     this.#container = container;
     this.#headerContainer = headerContainer;
     this.#pointsModel = pointsModel;
