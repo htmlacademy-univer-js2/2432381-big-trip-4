@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-const utc = require('dayjs/plugin/utc');
+import utc from 'dayjs/plugin/utc';
+
 dayjs.extend(utc);
 
 const DAY_DATE_FORMAT = 'MMM D';
@@ -62,17 +63,17 @@ export const getTotalOffersPrice = (offers) => {
   return totalPrice;
 };
 
-const futureFilterPoints = (point) => {
+function futureFilterPoints (point) {
   return dayjs().isBefore(point.dateFrom);
-};
+}
 
-const pastFilterPoints = (point) => {
+function pastFilterPoints (point) {
   return dayjs().isAfter(point.dateTo);
-};
+}
 
-const presentFilterPoints = (point) => {
+function presentFilterPoints (point) {
   return (dayjs().isAfter(point.dateFrom) && dayjs().isBefore(point.dateTo));
-};
+}
 
 function sortPointsArr (points) {
   return points.sort((a, b) => dayjs(b.dateFrom) - dayjs(a.dateFrom));
