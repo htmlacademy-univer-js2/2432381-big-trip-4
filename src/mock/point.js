@@ -4,8 +4,8 @@ const mockPoints = [
   {
     id: 'f4b62099-293f-4c3d-a702-94eec4a2808c',
     basePrice: 800,
-    dateFrom: '2019-07-13T22:55:00.845Z',
-    dateTo: '2019-07-13T23:46:00.375Z',
+    dateFrom: '2025-07-13T22:55:00.845Z',
+    dateTo: '2025-07-13T23:46:00.375Z',
     destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edcab',
     isFavorite: false,
     offers: [
@@ -40,15 +40,27 @@ const mockPoints = [
   {
     id: 'f7b62099-293f-4c3d-a702-94eec4a2808c',
     basePrice: 350,
-    dateFrom: '2019-07-14T22:55:56.845Z',
-    dateTo: '2019-07-16T23:22:13.375Z',
+    dateFrom: '2022-07-14T22:55:56.845Z',
+    dateTo: '2022-07-16T23:22:13.375Z',
     destination: 'cfe716cq-10xa-ye10-8077-2fs9a01edcab',
     isFavorite: false,
     offers: [
       'b7c3e4e6-9053-42ce-b747-e281314baa31'
     ],
     type: 'bus'
-  }
+  },
+  {
+    id: 'f4b62099-293f-4c3d-a702-94eec4a2808c',
+    basePrice: 800,
+    dateFrom: '2023-03-27T22:43:23Z',
+    dateTo: '2023-03-28T09:43:24Z',
+    destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edcab',
+    isFavorite: false,
+    offers: [
+      'b4c3e4e6-9053-42ce-b747-e281314baa31'
+    ],
+    type: 'drive',
+  },
 ];
 
 function getRandomPoint() {
