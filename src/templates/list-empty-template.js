@@ -1,12 +1,15 @@
 function createListEmpty(filters) {
-  const { txtMsg } = filters[0];
+
+  const filtersList = document.querySelectorAll('.trip-filters__filter input');
+  const checkedFilterType = filtersList[Array.from(filtersList).findIndex((x) => x.outerHTML.indexOf('checked') !== -1)].value;
+  const msg = filters.find((x) => x.type === checkedFilterType).txtMsg;
 
   return `<main class="page-body__page-main  page-main">
   <div class="page-body__container">
     <section class="trip-events">
       <h2 class="visually-hidden">Trip events</h2>
 
-      <p class="trip-events__msg">${txtMsg}</p>
+      <p class="trip-events__msg">${msg}</p>
 
       <!--
         Значение отображаемого текста зависит от выбранного фильтра:

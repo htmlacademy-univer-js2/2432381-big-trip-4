@@ -26,10 +26,11 @@ const boardPresenter = new BoardPresenter({
   destinationsModel,
 });
 
+render(new ListFilterElement({filters}), siteListFilter);
+
 if(pointsModel.points.length === 0) {
   mainElement.innerHTML = new ListEmpty({filters}).template;
 }
-render(new ListFilterElement({filters}), siteListFilter);
 
 boardPresenter.init();
 

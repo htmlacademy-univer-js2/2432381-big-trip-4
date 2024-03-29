@@ -10,7 +10,6 @@ function generateFilter(points) {
         type: filterType,
         count: filterPoints(points).length,
         txtMsg: filterType !== 'everything' ? `There are no ${filterType} events now` : 'Click New Event to create your first point',
-        isChk: '',
       }),
     );
 }

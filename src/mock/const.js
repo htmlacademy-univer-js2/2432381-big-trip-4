@@ -42,10 +42,10 @@ const FilterType = {
 };
 
 const EmptyFilter = [
+  {type: 'everything', emptyMsg: 'Click New Event to create your first point'},
   {type: 'future', emptyMsg: 'There are no future events now'},
   {type: 'present', emptyMsg: 'There are no present events now'},
   {type: 'past', emptyMsg: 'There are no past events now'},
-  {type: 'everything', emptyMsg: 'Click New Event to create your first point'},
 ];
 
 
