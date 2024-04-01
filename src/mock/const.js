@@ -34,4 +34,19 @@ const OFFERS = [
   {ofName: 'Travel by train', price: 40},
 ];
 
-export {TRANSPORT_IMAGES, CITIES, OFFERS};
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};
+
+const EmptyFilter = [
+  {type: 'everything', emptyMsg: 'Click New Event to create your first point'},
+  {type: 'future', emptyMsg: 'There are no future events now'},
+  {type: 'present', emptyMsg: 'There are no present events now'},
+  {type: 'past', emptyMsg: 'There are no past events now'},
+];
+
+
+export {TRANSPORT_IMAGES, CITIES, OFFERS, FilterType, EmptyFilter};
