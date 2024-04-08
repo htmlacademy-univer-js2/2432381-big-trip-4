@@ -1,4 +1,5 @@
-import { render, replace, RenderPosition } from '../framework/render';
+import { render, remove, RenderPosition } from '../framework/render';
+import { updateItem } from '../utils/common';
 import NewPointView from '../view/add-new-point';
 import EditPointView from '../view/edit-point-view';
 import EventListView from '../view/event-list-view';
@@ -6,6 +7,7 @@ import PointView from '../view/point-view';
 import ListSortElement from '../view/sort-view';
 import ListEmpty from '../view/list-empty-view';
 import MainInfo from '../view/info-view';
+import PointPresenter from './point-presenter';
 
 export default class BoardPresenter {
   #container = null;
@@ -17,7 +19,7 @@ export default class BoardPresenter {
   #eventListComponent = null;
   #newPoint = null;
   #listEmpty = null;
-  #isOpenEditForm = false;
+  #pointPresenter = new Map();
 
   #boardPoints = [];
   #boardOffers = [];
@@ -54,50 +56,46 @@ export default class BoardPresenter {
   }
 
   #renderPoint(point, offer, destination) {
-
-    const escapeKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replaceFormToPoint();
-        this.#isOpenEditForm = false;
-        document.removeEventListener('keydown', escapeKeyDownHandler);
-      }
-    };
-    const pointComponent = new PointView({
-      point,
-      offer,
-      onEditClick: () => {
-        if (this.#isOpenEditForm === false) {
-          replacePointToForm();
-          this.#isOpenEditForm = true;
-          document.addEventListener('keydown', escapeKeyDownHandler);
-        }
-      }
+    const pointPresenter = new PointPresenter({
+      eventListComponent: this.#eventListComponent,
+      onDataChange: this.#handlePointChange,
+      onModeChange: this.#handleModeChange,
     });
 
-    const pointEditComponent = new EditPointView({
-      point,
-      offer,
-      destination,
-      onFormSubmit: () => {
-        replaceFormToPoint();
-        this.#isOpenEditForm = false;
-        document.addEventListener('keydown', escapeKeyDownHandler);
-      },
-      onFormClose: () => {
-        replaceFormToPoint();
-        this.#isOpenEditForm = false;
-      }
-    });
+    pointPresenter.init(point, offer, destination);
 
-    function replacePointToForm () {
-      replace(pointEditComponent, pointComponent);
-    }
+    this.#pointPresenter.set(point.id, pointPresenter);
+  }
 
-    function replaceFormToPoint () {
-      replace(pointComponent, pointEditComponent);
-    }
-    render(pointComponent, this.#eventListComponent.element);
+  #clearPointList() {
+    this.#pointPresenter.forEach((p) => p .destroy());
+    this.#pointPresenter.clear();
+    remove(this.infoView);
+  }
+
+  #handlePointChange = (updatedPoint) => {
+    this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
+    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#findOffer(updatedPoint), this.#findDest(updatedPoint));
+  };
+
+  #handleModeChange = () => {
+    this.#pointPresenter.forEach((p) => p.resetView());
+  };
+
+  #renderMainInfo(points, sOffers, sDests){
+    render(
+      new MainInfo({points: points, offers: sOffers, dests: sDests}),
+      this.#headerContainer,
+      RenderPosition.AFTERBEGIN,
+    );
+  }
+
+  #findOffer(point) {
+    return this.#boardOffers.find((x) => x.offers[0].id === point.offers[0]);
+  }
+
+  #findDest(point) {
+    return this.#boardDestinations.find((x) => x.id === point.destination);
   }
 
   #renderDynamicComponents() {
@@ -105,17 +103,14 @@ export default class BoardPresenter {
     const sortedDests = [];
 
     for (let i = 0; i < this.#boardPoints.length; i++) {
-      const offer = this.#boardOffers.find((x) => x.offers[0].id === this.#boardPoints[i].offers[0]);
-      const dest = this.#boardDestinations.find((x) => x.id === this.#boardPoints[i].destination);
+      const offer = this.#findOffer(this.#boardPoints[i]);
+      const dest = this.#findDest(this.#boardPoints[i]);
 
       sortedOffers.push(offer);
       sortedDests.push(dest);
 
       this.#renderPoint(this.#boardPoints[i], offer, dest);
     }
-
-    render(new MainInfo({points: this.#boardPoints, offers: sortedOffers, dests: sortedDests}), this.#headerContainer, RenderPosition.AFTERBEGIN);
+    this.#renderMainInfo(this.#boardPoints, sortedOffers, sortedDests);
   }
 }
-
-

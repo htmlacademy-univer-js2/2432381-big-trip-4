@@ -1,9 +1,6 @@
-import { getRandomArrayElement } from '../utils/common.js';
-import { TRANSPORT_IMAGES } from './const';
-
 const mockOffers = [
   {
-    type: getRandomArrayElement(TRANSPORT_IMAGES),
+    type: 'drive',
     offers: [
       {
         id: 'b4c3e4e6-9053-42ce-b747-e281314baa31',
@@ -13,7 +10,7 @@ const mockOffers = [
     ]
   },
   {
-    type: getRandomArrayElement(TRANSPORT_IMAGES),
+    type: 'taxi',
     offers: [
       {
         id: 'b5c3e4e6-9053-42ce-b747-e281314baa31',
@@ -23,7 +20,7 @@ const mockOffers = [
     ]
   },
   {
-    type: getRandomArrayElement(TRANSPORT_IMAGES),
+    type: 'bus',
     offers: [
       {
         id: 'b6c3e4e6-9053-42ce-b747-e281314baa31',
@@ -38,7 +35,7 @@ const mockOffers = [
     ]
   },
   {
-    type: getRandomArrayElement(TRANSPORT_IMAGES),
+    type: 'check-in',
     offers: [
       {
         id: 'b7c3e4e6-9053-42ce-b747-e281314baa31'
