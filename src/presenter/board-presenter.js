@@ -1,9 +1,11 @@
-import { render, RenderPosition, remove } from '../framework/render';
+import { render, remove, RenderPosition } from '../framework/render';
 import { updateItem } from '../utils/common';
+import NewPointView from '../view/add-new-point';
 import EditPointView from '../view/edit-point-view';
 import EventListView from '../view/event-list-view';
 import PointView from '../view/point-view';
 import ListSortElement from '../view/sort-view';
+import ListEmpty from '../view/list-empty-view';
 import MainInfo from '../view/info-view';
 import PointPresenter from './point-presenter';
 
@@ -15,6 +17,8 @@ export default class BoardPresenter {
   #destinationsModel = null;
   #sortComponent = null;
   #eventListComponent = null;
+  #newPoint = null;
+  #listEmpty = null;
   #pointPresenter = new Map();
 
   #boardPoints = [];
@@ -29,8 +33,10 @@ export default class BoardPresenter {
     this.#destinationsModel = destinationsModel;
     this.#sortComponent = sortComponent || new ListSortElement(); // защитное программироване с оператором ||
     this.#eventListComponent = eventListComponent || new EventListView();
+    this.#newPoint = newPoint || (() => new NewPointView());
     this.editPoint = editPoint || (() => new EditPointView());
     this.pointView = pointView || (() => new PointView());
+    this.#listEmpty = listEmpty || (() => new ListEmpty());
     this.infoView = infoView || (() => new MainInfo());
   }
 
@@ -50,7 +56,6 @@ export default class BoardPresenter {
   }
 
   #renderPoint(point, offer, destination) {
-
     const pointPresenter = new PointPresenter({
       eventListComponent: this.#eventListComponent,
       onDataChange: this.#handlePointChange,
