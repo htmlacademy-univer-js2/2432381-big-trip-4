@@ -33,13 +33,12 @@ export default class BoardPresenter {
   #sortedOffers = [];
   #sortedDests = [];
 
-  constructor({container, headerContainer, sortComponent, eventListComponent, editPoint, newPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, listEmpty}) {
+  constructor({container, headerContainer, eventListComponent, editPoint, newPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, listEmpty}) {
     this.#container = container;
     this.#headerContainer = headerContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
-    //this.#sortComponent = sortComponent || (() => new ListSortElement()); // защитное программироване с оператором ||
     this.#eventListComponent = eventListComponent || new EventListView();
     this.#newPoint = newPoint || (() => new NewPointView());
     this.editPoint = editPoint || (() => new EditPointView());

@@ -1,4 +1,4 @@
-import { SortType } from "../mock/const";
+import { SortType } from '../mock/const';
 
 function createListSortElement(){
   return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">

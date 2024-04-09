@@ -8,7 +8,7 @@ export default class ListSortElement extends AbstractView {
     super();
     this.#handleSortTypeChange = onSortTypeChange;
 
-    this.element.addEventListener('click', this.#SortTypeChangeHandler)
+    this.element.addEventListener('click', this.#SortTypeChangeHandler);
 
   }
 
@@ -21,5 +21,5 @@ export default class ListSortElement extends AbstractView {
       return;
     }
     this.#handleSortTypeChange(evt.target.dataset.sortType);
-  }
+  };
 }
