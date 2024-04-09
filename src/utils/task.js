@@ -16,9 +16,9 @@ function normalizeDate (date) {
 
 function normalizeDay (date1, date2) {
   if(dayjs(date1).format('MMM') === dayjs(date2).format('MMM')){
-    return date2 ? dayjs(date2).format(DAY_FORMAT) : '';
+    return date1 ? dayjs(date1).format(DAY_FORMAT) : '';
   }
-  return date2 ? dayjs(date2).format(DAY_DATE_FORMAT) : '';
+  return date1 ? dayjs(date1).format(DAY_DATE_FORMAT) : '';
 }
 
 function normalizeHour (date) {
@@ -75,8 +75,19 @@ function presentFilterPoints (point) {
   return (dayjs().isAfter(point.dateFrom) && dayjs().isBefore(point.dateTo));
 }
 
-function sortPointsArr (points) {
-  return points.sort((a, b) => dayjs(b.dateFrom) - dayjs(a.dateFrom));
+function sortPointsArrByDay (a, b) {
+  return Number(dayjs(a.dateFrom).format(DAY_FORMAT)) - Number(dayjs(b.dateFrom).format(DAY_FORMAT));
 }
 
-export { sortPointsArr, normalizeDate, normalizeHour, normalizeLongDayDate, normalizeDay, futureFilterPoints, presentFilterPoints, NOW, pastFilterPoints };
+function sortPointsArrByPrice (a, b) {
+  return b.basePrice - a.basePrice;
+}
+
+function sortPointsArrByTime (a, b) {
+  const ft = dayjs(b.dateTo).diff(dayjs(b.dateFrom), 'm');
+  const st = dayjs(a.dateTo).diff(dayjs(a.dateFrom), 'm');
+  return ft - st;
+}
+
+
+export { sortPointsArrByDay, normalizeDate, normalizeHour, normalizeLongDayDate, normalizeDay, futureFilterPoints, presentFilterPoints, NOW, pastFilterPoints, sortPointsArrByPrice, sortPointsArrByTime };

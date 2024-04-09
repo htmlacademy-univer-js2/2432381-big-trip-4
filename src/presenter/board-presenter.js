@@ -1,4 +1,4 @@
-import { render, remove, RenderPosition } from '../framework/render';
+import { render, RenderPosition } from '../framework/render';
 import { updateItem } from '../utils/common';
 import NewPointView from '../view/add-new-point';
 import EditPointView from '../view/edit-point-view';
@@ -8,6 +8,8 @@ import ListSortElement from '../view/sort-view';
 import ListEmpty from '../view/list-empty-view';
 import MainInfo from '../view/info-view';
 import PointPresenter from './point-presenter';
+import { SortType } from '../mock/const';
+import { sortPointsArrByPrice, sortPointsArrByTime } from '../utils/task';
 
 export default class BoardPresenter {
   #container = null;
@@ -19,11 +21,17 @@ export default class BoardPresenter {
   #eventListComponent = null;
   #newPoint = null;
   #listEmpty = null;
+
   #pointPresenter = new Map();
+  #currentSortType = SortType.DAY;
+  #sourcedBoardPoints = [];
 
   #boardPoints = [];
   #boardOffers = [];
   #boardDestinations = [];
+
+  #sortedOffers = [];
+  #sortedDests = [];
 
   constructor({container, headerContainer, sortComponent, eventListComponent, editPoint, newPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, listEmpty}) {
     this.#container = container;
@@ -31,7 +39,7 @@ export default class BoardPresenter {
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
-    this.#sortComponent = sortComponent || new ListSortElement(); // защитное программироване с оператором ||
+    //this.#sortComponent = sortComponent || (() => new ListSortElement()); // защитное программироване с оператором ||
     this.#eventListComponent = eventListComponent || new EventListView();
     this.#newPoint = newPoint || (() => new NewPointView());
     this.editPoint = editPoint || (() => new EditPointView());
@@ -45,14 +53,47 @@ export default class BoardPresenter {
     this.#boardOffers = [...this.#offersModel.offers];
     this.#boardDestinations = [...this.#destinationsModel.destinations];
 
+    this.#sourcedBoardPoints = [...this.#pointsModel.points];
+
     this.#renderComponents();
   }
 
   #renderComponents() {
-    render(this.#sortComponent, this.#container);
+    this.#renderSort();
     render(this.#eventListComponent, this.#container);
-
     this.#renderDynamicComponents();
+    this.#renderMainInfo(this.#boardPoints, this.#sortedOffers, this.#sortedDests);
+  }
+
+  #sortPoints(sortType) {
+    switch(sortType) {
+      case SortType.PRICE:
+        this.#boardPoints.sort(sortPointsArrByPrice);
+        break;
+      case SortType.TIME:
+        this.#boardPoints.sort(sortPointsArrByTime);
+        break;
+      default:
+        this.#boardPoints = [...this.#sourcedBoardPoints];
+    }
+    this.#currentSortType = sortType;
+  }
+
+  #handleSortTypeChange = (sortType) => {
+    if(this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortPoints(sortType);
+    this.#clearPointList();
+    this.#renderDynamicComponents();
+  };
+
+  #renderSort() {
+    this.#sortComponent = new ListSortElement({
+      onSortTypeChange: this.#handleSortTypeChange,
+    });
+    render(this.#sortComponent, this.#container);
   }
 
   #renderPoint(point, offer, destination) {
@@ -68,13 +109,13 @@ export default class BoardPresenter {
   }
 
   #clearPointList() {
-    this.#pointPresenter.forEach((p) => p .destroy());
+    this.#pointPresenter.forEach((p) => p.destroy());
     this.#pointPresenter.clear();
-    remove(this.infoView);
   }
 
   #handlePointChange = (updatedPoint) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
+    this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#findOffer(updatedPoint), this.#findDest(updatedPoint));
   };
 
@@ -99,18 +140,14 @@ export default class BoardPresenter {
   }
 
   #renderDynamicComponents() {
-    const sortedOffers = [];
-    const sortedDests = [];
-
     for (let i = 0; i < this.#boardPoints.length; i++) {
       const offer = this.#findOffer(this.#boardPoints[i]);
       const dest = this.#findDest(this.#boardPoints[i]);
 
-      sortedOffers.push(offer);
-      sortedDests.push(dest);
+      this.#sortedOffers.push(offer);
+      this.#sortedDests.push(dest);
 
       this.#renderPoint(this.#boardPoints[i], offer, dest);
     }
-    this.#renderMainInfo(this.#boardPoints, sortedOffers, sortedDests);
   }
 }
