@@ -48,5 +48,13 @@ const EmptyFilter = [
   {type: 'past', emptyMsg: 'There are no past events now'},
 ];
 
+const SortType = {
+  DAY: 'Day',
+  EVENT: 'Event',
+  TIME: 'Time',
+  PRICE: 'Price',
+  OFFERS: 'Offers',
+};
 
-export {TRANSPORT_IMAGES, CITIES, OFFERS, FilterType, EmptyFilter};
+
+export {TRANSPORT_IMAGES, CITIES, OFFERS, FilterType, EmptyFilter, SortType};
