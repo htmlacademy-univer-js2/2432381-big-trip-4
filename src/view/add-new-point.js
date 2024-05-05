@@ -1,9 +1,23 @@
 import { addNewPoint } from '../templates/add-new-point-template';
-import AbstractView from '../framework/view/abstract-view';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 
-export default class NewPointView extends AbstractView{
+export default class NewPointView extends AbstractStatefulView{
+  #handleAddPoint = null;
+
+  constructor({}) {
+    super();
+    //this.#handleAddPoint = onAddPoint;
+
+    document.querySelector('.trip-main__event-add-btn').addEventListener('click', this.#addNewPointHandler);
+  }
+
   get template() {
     return addNewPoint();
+  }
+
+  #addNewPointHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleAddPoint();
   }
 }
 

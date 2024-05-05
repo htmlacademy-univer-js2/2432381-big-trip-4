@@ -8,6 +8,8 @@ export default class PointsModel {
   #points = Array.from({length: POINTS_COUNT}, getRandomPoint).sort(sortPointsArrByDay);
 
   get points() {
+    //console.log(this.#points)
     return this.#points;
   }
 }
+export {POINTS_COUNT};

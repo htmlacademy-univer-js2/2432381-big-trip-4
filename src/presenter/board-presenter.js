@@ -8,8 +8,9 @@ import ListSortElement from '../view/sort-view';
 import ListEmpty from '../view/list-empty-view';
 import MainInfo from '../view/info-view';
 import PointPresenter from './point-presenter';
-import { SortType } from '../mock/const';
+import { SortType, TRANSPORT_OFFERS } from '../mock/const';
 import { sortPointsArrByPrice, sortPointsArrByTime } from '../utils/task';
+import { addNewPoint } from '../templates/add-new-point-template';
 
 export default class BoardPresenter {
   #container = null;
@@ -19,7 +20,7 @@ export default class BoardPresenter {
   #destinationsModel = null;
   #sortComponent = null;
   #eventListComponent = null;
-  #newPoint = null;
+  #newPointComponent = null;
   #listEmpty = null;
 
   #pointPresenter = new Map();
@@ -40,7 +41,7 @@ export default class BoardPresenter {
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
     this.#eventListComponent = eventListComponent || new EventListView();
-    this.#newPoint = newPoint || (() => new NewPointView());
+    /* this.#newPoint = newPoint || (() => new NewPointView()); */
     this.editPoint = editPoint || (() => new EditPointView());
     this.pointView = pointView || (() => new PointView());
     this.#listEmpty = listEmpty || (() => new ListEmpty());
@@ -51,9 +52,8 @@ export default class BoardPresenter {
     this.#boardPoints = [...this.#pointsModel.points];
     this.#boardOffers = [...this.#offersModel.offers];
     this.#boardDestinations = [...this.#destinationsModel.destinations];
-
     this.#sourcedBoardPoints = [...this.#pointsModel.points];
-
+    //console.log(this.#boardOffers)
     this.#renderComponents();
   }
 
@@ -131,7 +131,8 @@ export default class BoardPresenter {
   }
 
   #findOffer(point) {
-    return this.#boardOffers.find((x) => x.offers[0].id === point.offers[0]);
+    //console.log(this.#boardOffers)
+    return this.#boardOffers.find((x) => x.id === point.offers[0]);
   }
 
   #findDest(point) {
@@ -140,13 +141,25 @@ export default class BoardPresenter {
 
   #renderDynamicComponents() {
     for (let i = 0; i < this.#boardPoints.length; i++) {
-      const offer = this.#findOffer(this.#boardPoints[i]);
+      //let offer = this.#findOffer(this.#boardPoints[i]);
       const dest = this.#findDest(this.#boardPoints[i]);
+      let offer = this.#boardOffers[i];
+      //console.log(offer)
+      //const offersArr = Object.values(TRANSPORT_OFFERS.find((x) => Object.keys(x)[0] === this.#boardPoints[i].type));
+/*
+      offer = {
+        ...offer,
+        type: this.#boardPoints[i].type,
+        offers: [{
+          ...offers,
 
+        }],
+      }; */
       this.#sortedOffers.push(offer);
       this.#sortedDests.push(dest);
 
       this.#renderPoint(this.#boardPoints[i], offer, dest);
     }
+
   }
 }

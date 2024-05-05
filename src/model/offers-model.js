@@ -1,7 +1,7 @@
-import { getOffer } from '../mock/offers';
+import { mockOffers } from '../mock/point';
 
 export default class OffersModel {
-  #offers = getOffer();
+  #offers = mockOffers;
 
   get offers(){
     return this.#offers;

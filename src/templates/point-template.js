@@ -3,12 +3,15 @@ import { normalizeDate, normalizeHour, timeDifference } from '../utils/task';
 function createPointTemplate (point, offer) {
   const {dateFrom, dateTo, type, basePrice, isFavorite} = point || {};
   const elOffers = [];
-  for(let i = 0; i < offer.offers.length; i++) {
-    elOffers.push(`<li class="event__offer">
-    <span class="event__offer-title">${offer.offers[i].title === undefined ? '' : offer.offers[i].title}</span>
-    ${offer.offers[i].title === undefined ? '' : '&plus;&euro;&nbsp'}
-    <span class="event__offer-price">${offer.offers[i].price === undefined ? '' : offer.offers[i].price}</span>
-    </li>`);
+  console.log(offer)
+  if(offer !== undefined) {
+    for(let i = 0; i < offer.offers.length; i++) {
+      elOffers.push(`<li class="event__offer">
+      <span class="event__offer-title">${offer.offers[i].title === undefined ? '' : offer.offers[i].title}</span>
+      ${offer.offers[i].title === undefined ? '' : '&plus;&euro;&nbsp'}
+      <span class="event__offer-price">${offer.offers[i].price === undefined ? '' : offer.offers[i].price}</span>
+      </li>`);
+    }
   }
 
   const date = normalizeDate(dateFrom);

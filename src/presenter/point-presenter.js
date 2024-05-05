@@ -1,5 +1,6 @@
 import EditPointView from '../view/edit-point-view';
 import PointView from '../view/point-view';
+import NewPointView from '../view/add-new-point';
 
 import { render, replace, remove } from '../framework/render';
 
@@ -15,6 +16,7 @@ export default class PointPresenter {
 
   #pointComponent = null;
   #pointEditComponent = null;
+  #newPointComponent = null;
 
   #point = null;
   #offer = null;
@@ -29,7 +31,6 @@ export default class PointPresenter {
   }
 
   init(point, offer, destination) {
-
     this.#point = point;
     this.#offer = offer;
     this.#destination = destination;
@@ -49,7 +50,11 @@ export default class PointPresenter {
       offer: this.#offer,
       destination: this.#destination,
       onFormSubmit: this.#handleFormSubmit,
-      onFormClose: this.#handleFormClose,
+      onFormClose: this.#resetClickHandler,
+    });
+
+    this.#newPointComponent = new NewPointView({
+      onAddPoint: this.#handleAddNewPoint,
     });
 
     if(prevPointComponent === null || prevPointEditComponent === null) {
@@ -76,8 +81,14 @@ export default class PointPresenter {
 
   resetView() {
     if(this.#mode !== Mode.DEFAULT) {
+      this.#pointEditComponent.reset(this.#point);
       this.#replaceFormToPoint();
     }
+  }
+
+  #resetClickHandler = () => {
+    this.#pointEditComponent.reset(this.#point);
+    this.#replaceFormToPoint();
   }
 
   #replacePointToForm () {
@@ -96,6 +107,7 @@ export default class PointPresenter {
   #escapeKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
+      this.#pointEditComponent.reset(this.#point);
       this.#replaceFormToPoint();
     }
   };
@@ -109,11 +121,11 @@ export default class PointPresenter {
     this.#replaceFormToPoint();
   };
 
-  #handleFormClose = () => {
-    this.#replaceFormToPoint();
-  };
-
   #handleFavoriteClick = () => {
     this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
   };
+
+  #handleAddNewPoint() {
+    render(new NewPointView(), this.#eventListComponent);
+  }
 }
