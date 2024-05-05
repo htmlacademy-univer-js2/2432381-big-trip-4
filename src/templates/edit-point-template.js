@@ -1,41 +1,39 @@
-import { normalizeLongDayDate, getTotalOffersPrice } from '../utils/task';
+import { normalizeLongDayDate } from '../utils/task';
 import { TRANSPORT_IMAGES, TRANSPORT_OFFERS, CITIES } from '../mock/const';
 
 export const editPointTemplate = (data) => {
-  console.log(data)
   const {dateFrom, dateTo, type, basePrice} = data.state.point || {};
   const {description, name, pictures} = data.dest || {};
 
-  const totalOffersPrice = getTotalOffersPrice(data.offers);
   const dateF = normalizeLongDayDate(dateFrom);
   const dateT = normalizeLongDayDate(dateTo);
 
   function typeElements() {
-    let transportTypes = [];
+    const transportTypes = [];
 
     for( let i = 0; i < TRANSPORT_IMAGES.length; i++){
 
-      let name = TRANSPORT_IMAGES[i].charAt(0).toUpperCase() + TRANSPORT_IMAGES[i].slice(1);
-      let checkedType = (type === TRANSPORT_IMAGES[i]) ? 'checked' : '';
+      const tName = TRANSPORT_IMAGES[i].charAt(0).toUpperCase() + TRANSPORT_IMAGES[i].slice(1);
+      const checkedType = (type === TRANSPORT_IMAGES[i]) ? 'checked' : '';
 
       transportTypes.push(`<div class="event__type-item">
         <input id="event-type-${TRANSPORT_IMAGES[i]}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${TRANSPORT_IMAGES[i]}" ${checkedType}>
-        <label class="event__type-label  event__type-label--${TRANSPORT_IMAGES[i]}" for="event-type-${TRANSPORT_IMAGES[i]}-1">${name}</label>
+        <label class="event__type-label  event__type-label--${TRANSPORT_IMAGES[i]}" for="event-type-${TRANSPORT_IMAGES[i]}-1">${tName}</label>
         </div>`);
     }
     return transportTypes.join('');
   }
 
   function cities() {
-    let cityArr = [];
+    const cityArr = [];
     CITIES.forEach((x) => cityArr.push(`<option value=${x}></option>`));
     return cityArr;
   }
 
   function offersElements() {
-    let typeOffers = [];
+    const typeOffers = [];
 
-    for(let i = 0;  i < TRANSPORT_OFFERS.length; i++){
+    for(let i = 0; i < TRANSPORT_OFFERS.length; i++){
 
       const offersArr = Object.values(TRANSPORT_OFFERS[i])[0];
       const trType = Object.keys(TRANSPORT_OFFERS[i])[0];
@@ -46,7 +44,7 @@ export const editPointTemplate = (data) => {
 
           const title = offersArr[j].title;
           const price = offersArr[j].price;
-          const type = title.split(' ')[0];
+          const typeOf = title.split(' ')[0];
 
           let isChecked;
           if(data.offers.offers.sort()[j] !== undefined) {
@@ -54,8 +52,8 @@ export const editPointTemplate = (data) => {
           }
 
           typeOffers.push(`<div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-" ${type} ${isChecked === true ? 'checked' : ''}>
-            <label class="event__offer-label" for="event-offer-${type}-1">
+            <input class="event__offer-checkbox  visually-hidden" id="event-offer-${typeOf}-1" type="checkbox" name="event-offer-" ${typeOf} ${isChecked === true ? 'checked' : ''}>
+            <label class="event__offer-label" for="event-offer-${typeOf}-1">
               <span class="event__offer-title">${title}</span>
               &plus;&euro;&nbsp;
               <span class="event__offer-price">${price}</span>
@@ -64,7 +62,7 @@ export const editPointTemplate = (data) => {
         }
       }
     }
-    return typeOffers.join('')
+    return typeOffers.join('');
   }
 
   const offersHtml =

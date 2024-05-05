@@ -1,7 +1,6 @@
 import { editPointTemplate } from '../templates/edit-point-template';
-import AbstractStatefulView from '../framework/view/abstract-stateful-view'
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
-import { mockDests } from '../mock/point';
 import { CITIES } from '../mock/const';
 
 import 'flatpickr/dist/flatpickr.min.css';
@@ -20,7 +19,7 @@ export default class EditPointView extends AbstractStatefulView {
     this.#offers = offer;
     this.#dest = destination;
     this.#allDests = CITIES;
-    this._setState(EditPointView.parsePointToState({point}))
+    this._setState(EditPointView.parsePointToState({point}));
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
 
@@ -80,7 +79,7 @@ export default class EditPointView extends AbstractStatefulView {
   #setDatepickerFrom() {
     if (this._state.point.dateFrom) {
       this.#datepickerFrom = flatpickr(
-        this.element.querySelector("[name='event-start-time']"),
+        this.element.querySelector(`[name='event-start-time']`),
         {
           enableTime: true,
           dateFormat: 'd/m/y H:i',
@@ -94,7 +93,7 @@ export default class EditPointView extends AbstractStatefulView {
   #setDatepickerTo() {
     if (this._state.point.dateTo) {
       this.#datepickerTo = flatpickr(
-        this.element.querySelector("[name='event-end-time']"),
+        this.element.querySelector(`[name='event-end-time']`),
         {
           enableTime: true,
           dateFormat: 'd/m/y H:i',
@@ -117,25 +116,24 @@ export default class EditPointView extends AbstractStatefulView {
 
   #destinationInputHandler = (evt) => {
     const selectedDest = this.#allDests.find((d) => d === evt.target.value);
-    console.log(selectedDest.id)
     const selectedDestId = (selectedDest) ? selectedDest.id : '';
     this.updateElement({
       point: {
         ...this._state.point,
         destination: selectedDestId,
       }
-    })
+    });
   };
+
   #changeOffersHandler = () => {
     const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-    console.log(checkBoxes.map((e) => e.id))
     this._setState({
       point: {
         ...this._state.point,
         offers: checkBoxes.map((e) => e.dataset.offerId)
       }
     });
-  }
+  };
 
   #changeEventPriceHandler = (evt) => {
     evt.preventDefault();
@@ -145,11 +143,9 @@ export default class EditPointView extends AbstractStatefulView {
         basePrice: Number(evt.target.value),
       }
     });
-    console.log(this._state)
   };
 
   static parsePointToState = (point) => (point);
 
   static parseStateToPoint = (state) => state.point;
-
 }

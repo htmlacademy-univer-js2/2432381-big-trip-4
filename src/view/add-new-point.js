@@ -4,10 +4,8 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 export default class NewPointView extends AbstractStatefulView{
   #handleAddPoint = null;
 
-  constructor({}) {
+  constructor() {
     super();
-    //this.#handleAddPoint = onAddPoint;
-
     document.querySelector('.trip-main__event-add-btn').addEventListener('click', this.#addNewPointHandler);
   }
 
@@ -18,6 +16,6 @@ export default class NewPointView extends AbstractStatefulView{
   #addNewPointHandler = (evt) => {
     evt.preventDefault();
     this.#handleAddPoint();
-  }
+  };
 }
 

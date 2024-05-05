@@ -2,14 +2,14 @@ import { getRandomArrayElement, getRandomInt } from '../utils/common';
 import { TRANSPORT_IMAGES, TRANSPORT_OFFERS, CITIES } from './const';
 import { NOW } from '../utils/task';
 
-let mockOffers = [];
-let mockDests = [];
+const mockOffers = [];
+const mockDests = [];
 //`cfe${d}16cq-10xa-ye10-8077-2fs9a01edcab`
 function getRandomPoint() {
 
   const id = crypto.randomUUID();
   const price = getRandomInt(20, 2000);
-  const isFavorite = getRandomInt(0, 2) === 1 ? true : false;
+  const isFavorite = getRandomInt(0, 2) === 1;
   const type = getRandomArrayElement(TRANSPORT_IMAGES);
   const dateFrom = NOW.toISOString();
   const dateTo = NOW.set('day', getRandomInt(1, 10)).set('hour', getRandomInt(NOW.$H, 24)).toISOString();
@@ -45,17 +45,17 @@ function getOffers(point) {
     return;
   }
 
-  let allOffers = [];
+  const allOffers = [];
   const offersArr = Object.values(TRANSPORT_OFFERS.find((x) => Object.keys(x)[0] === point.type));
   for(let i = 0; i < point.offers.length; i++) {
 
-    let ofEl = offersArr[0][i];
+    const ofEl = offersArr[0][i];
 
-    let of = {
+    const of = {
       id: point.offers[i],
       title: ofEl.title,
       price: ofEl.price
-    }
+    };
 
     allOffers.push(of);
   }
@@ -65,15 +65,15 @@ function getOffers(point) {
     offers: [
       ...allOffers,
     ]
-  }
-  mockOffers.push(offer)
+  };
+  mockOffers.push(offer);
 
   return mockOffers;
 }
 
 function getDests(point) {
   const id = point.destination;
-  const city  = getRandomArrayElement(CITIES);
+  const city = getRandomArrayElement(CITIES);
   const dest = {
     id: id,
     description: `${city}, is a beautiful city, a true asian pearl, with crowded streets.`,
@@ -85,7 +85,7 @@ function getDests(point) {
       }
     ]
   };
-  mockDests.push(dest)
+  mockDests.push(dest);
 }
 
 export {getRandomPoint, mockOffers, mockDests};

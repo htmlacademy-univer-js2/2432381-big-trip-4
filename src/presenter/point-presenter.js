@@ -89,7 +89,7 @@ export default class PointPresenter {
   #resetClickHandler = () => {
     this.#pointEditComponent.reset(this.#point);
     this.#replaceFormToPoint();
-  }
+  };
 
   #replacePointToForm () {
     replace(this.#pointEditComponent, this.#pointComponent);

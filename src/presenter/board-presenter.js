@@ -1,6 +1,5 @@
 import { render, RenderPosition } from '../framework/render';
 import { updateItem } from '../utils/common';
-import NewPointView from '../view/add-new-point';
 import EditPointView from '../view/edit-point-view';
 import EventListView from '../view/event-list-view';
 import PointView from '../view/point-view';
@@ -8,9 +7,8 @@ import ListSortElement from '../view/sort-view';
 import ListEmpty from '../view/list-empty-view';
 import MainInfo from '../view/info-view';
 import PointPresenter from './point-presenter';
-import { SortType, TRANSPORT_OFFERS } from '../mock/const';
+import { SortType } from '../mock/const';
 import { sortPointsArrByPrice, sortPointsArrByTime } from '../utils/task';
-import { addNewPoint } from '../templates/add-new-point-template';
 
 export default class BoardPresenter {
   #container = null;
@@ -34,7 +32,7 @@ export default class BoardPresenter {
   #sortedOffers = [];
   #sortedDests = [];
 
-  constructor({container, headerContainer, eventListComponent, editPoint, newPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, listEmpty}) {
+  constructor({container, headerContainer, eventListComponent, editPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, listEmpty}) {
     this.#container = container;
     this.#headerContainer = headerContainer;
     this.#pointsModel = pointsModel;
@@ -131,7 +129,6 @@ export default class BoardPresenter {
   }
 
   #findOffer(point) {
-    //console.log(this.#boardOffers)
     return this.#boardOffers.find((x) => x.id === point.offers[0]);
   }
 
@@ -141,25 +138,13 @@ export default class BoardPresenter {
 
   #renderDynamicComponents() {
     for (let i = 0; i < this.#boardPoints.length; i++) {
-      //let offer = this.#findOffer(this.#boardPoints[i]);
       const dest = this.#findDest(this.#boardPoints[i]);
-      let offer = this.#boardOffers[i];
-      //console.log(offer)
-      //const offersArr = Object.values(TRANSPORT_OFFERS.find((x) => Object.keys(x)[0] === this.#boardPoints[i].type));
-/*
-      offer = {
-        ...offer,
-        type: this.#boardPoints[i].type,
-        offers: [{
-          ...offers,
+      const offer = this.#boardOffers[i];
 
-        }],
-      }; */
       this.#sortedOffers.push(offer);
       this.#sortedDests.push(dest);
 
       this.#renderPoint(this.#boardPoints[i], offer, dest);
     }
-
   }
 }

@@ -10,7 +10,6 @@ const LONG_DAY_DATE_FROMAT = 'DD/MM/YY HH:mm';
 const NOW = dayjs();
 
 
-
 function normalizeDate (date) {
   return date ? dayjs(date).format(DAY_DATE_FORMAT) : '';
 }

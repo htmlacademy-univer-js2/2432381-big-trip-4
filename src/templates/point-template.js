@@ -3,7 +3,6 @@ import { normalizeDate, normalizeHour, timeDifference } from '../utils/task';
 function createPointTemplate (point, offer) {
   const {dateFrom, dateTo, type, basePrice, isFavorite} = point || {};
   const elOffers = [];
-  console.log(offer)
   if(offer !== undefined) {
     for(let i = 0; i < offer.offers.length; i++) {
       elOffers.push(`<li class="event__offer">
