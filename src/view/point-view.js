@@ -12,7 +12,6 @@ export default class PointView extends AbstractView {
     super();
     this.#point = point;
     this.#offer = offer;
-
     this.#handleEditClick = onEditClick;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
 

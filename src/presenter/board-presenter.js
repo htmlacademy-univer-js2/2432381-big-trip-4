@@ -1,6 +1,5 @@
 import { render, RenderPosition } from '../framework/render';
 import { updateItem } from '../utils/common';
-import NewPointView from '../view/add-new-point';
 import EditPointView from '../view/edit-point-view';
 import EventListView from '../view/event-list-view';
 import PointView from '../view/point-view';
@@ -19,7 +18,7 @@ export default class BoardPresenter {
   #destinationsModel = null;
   #sortComponent = null;
   #eventListComponent = null;
-  #newPoint = null;
+  #newPointComponent = null;
   #listEmpty = null;
 
   #pointPresenter = new Map();
@@ -33,14 +32,14 @@ export default class BoardPresenter {
   #sortedOffers = [];
   #sortedDests = [];
 
-  constructor({container, headerContainer, eventListComponent, editPoint, newPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, listEmpty}) {
+  constructor({container, headerContainer, eventListComponent, editPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, listEmpty}) {
     this.#container = container;
     this.#headerContainer = headerContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
     this.#eventListComponent = eventListComponent || new EventListView();
-    this.#newPoint = newPoint || (() => new NewPointView());
+    /* this.#newPoint = newPoint || (() => new NewPointView()); */
     this.editPoint = editPoint || (() => new EditPointView());
     this.pointView = pointView || (() => new PointView());
     this.#listEmpty = listEmpty || (() => new ListEmpty());
@@ -51,9 +50,8 @@ export default class BoardPresenter {
     this.#boardPoints = [...this.#pointsModel.points];
     this.#boardOffers = [...this.#offersModel.offers];
     this.#boardDestinations = [...this.#destinationsModel.destinations];
-
     this.#sourcedBoardPoints = [...this.#pointsModel.points];
-
+    //console.log(this.#boardOffers)
     this.#renderComponents();
   }
 
@@ -131,7 +129,7 @@ export default class BoardPresenter {
   }
 
   #findOffer(point) {
-    return this.#boardOffers.find((x) => x.offers[0].id === point.offers[0]);
+    return this.#boardOffers.find((x) => x.id === point.offers[0]);
   }
 
   #findDest(point) {
@@ -140,8 +138,8 @@ export default class BoardPresenter {
 
   #renderDynamicComponents() {
     for (let i = 0; i < this.#boardPoints.length; i++) {
-      const offer = this.#findOffer(this.#boardPoints[i]);
       const dest = this.#findDest(this.#boardPoints[i]);
+      const offer = this.#boardOffers[i];
 
       this.#sortedOffers.push(offer);
       this.#sortedDests.push(dest);

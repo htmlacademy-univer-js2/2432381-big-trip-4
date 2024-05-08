@@ -1,59 +1,91 @@
-import { getRandomArrayElement } from '../utils/common';
+import { getRandomArrayElement, getRandomInt } from '../utils/common';
+import { TRANSPORT_IMAGES, TRANSPORT_OFFERS, CITIES } from './const';
+import { NOW } from '../utils/task';
 
-const mockPoints = [
-  {
-    id: 'f4b62099-293f-4c3d-a702-94eec4a2808c',
-    basePrice: 800,
-    dateFrom: '2019-07-13T22:55:00.845Z',
-    dateTo: '2019-07-13T23:46:00.375Z',
-    destination: 'cfe416cq-10xa-ye10-8077-2fs9a01edcab',
-    isFavorite: false,
-    offers: [
-      'b4c3e4e6-9053-42ce-b747-e281314baa31'
-    ],
-    type: 'drive',
-  },
-  {
-    id: 'f5b62099-293f-4c3d-a702-94eec4a2808c',
-    basePrice: 1100,
-    dateFrom: '2019-07-19T22:55:56.845Z',
-    dateTo: '2019-07-20T12:22:13.375Z',
-    destination: 'cfe516cq-10xa-ye10-8077-2fs9a01edcab',
-    isFavorite: true,
-    offers: [
-      'b5c3e4e6-9053-42ce-b747-e281314baa31'
-    ],
-    type: 'taxi'
-  },
-  {
-    id: 'f6b62099-293f-4c3d-a702-94eec4a2808c',
-    basePrice: 2100,
-    dateFrom: '2019-07-14T22:55:56.845Z',
-    dateTo: '2019-07-16T23:22:13.375Z',
-    destination: 'cfe616cq-10xa-ye10-8077-2fs9a01edcab',
-    isFavorite: false,
-    offers: [
-      'b6c3e4e6-9053-42ce-b747-e281314baa31'
-    ],
-    type: 'bus'
-  },
-  {
-    id: 'f7b62099-293f-4c3d-a702-94eec4a2808c',
-    basePrice: 350,
-    dateFrom: '2019-07-18T22:55:56.845Z',
-    dateTo: '2019-07-23T23:22:13.375Z',
-    destination: 'cfe716cq-10xa-ye10-8077-2fs9a01edcab',
-    isFavorite: false,
-    offers: [
-      'b7c3e4e6-9053-42ce-b747-e281314baa31'
-    ],
-    type: 'check-in'
-  },
-];
-
+const mockOffers = [];
+const mockDests = [];
+//`cfe${d}16cq-10xa-ye10-8077-2fs9a01edcab`
 function getRandomPoint() {
-  const randPoint = getRandomArrayElement(mockPoints);
-  return randPoint;
+
+  const id = crypto.randomUUID();
+  const price = getRandomInt(20, 2000);
+  const isFavorite = getRandomInt(0, 2) === 1;
+  const type = getRandomArrayElement(TRANSPORT_IMAGES);
+  const dateFrom = NOW.toISOString();
+  const dateTo = NOW.set('day', getRandomInt(1, 10)).set('hour', getRandomInt(NOW.$H, 24)).toISOString();
+  //const d = getRandomInt(4,8);
+  const offersIds = [];
+  const destId = crypto.randomUUID();
+
+  for(let i = 0; i < getRandomInt(0,4); i++) {
+    offersIds.push(crypto.randomUUID());
+  }
+
+  const point = {
+    id: id,
+    basePrice: price,
+    dateFrom: dateFrom,
+    dateTo: dateTo,
+    destination: destId,
+    isFavorite: isFavorite,
+    offers: [
+      ...offersIds,
+    ],
+    type: type
+  };
+
+  getOffers(point);
+  getDests(point);
+
+  return point;
 }
 
-export {getRandomPoint};
+function getOffers(point) {
+  if(point === undefined) {
+    return;
+  }
+
+  const allOffers = [];
+  const offersArr = Object.values(TRANSPORT_OFFERS.find((x) => Object.keys(x)[0] === point.type));
+  for(let i = 0; i < point.offers.length; i++) {
+
+    const ofEl = offersArr[0][i];
+
+    const of = {
+      id: point.offers[i],
+      title: ofEl.title,
+      price: ofEl.price
+    };
+
+    allOffers.push(of);
+  }
+
+  const offer = {
+    type: point.type,
+    offers: [
+      ...allOffers,
+    ]
+  };
+  mockOffers.push(offer);
+
+  return mockOffers;
+}
+
+function getDests(point) {
+  const id = point.destination;
+  const city = getRandomArrayElement(CITIES);
+  const dest = {
+    id: id,
+    description: `${city}, is a beautiful city, a true asian pearl, with crowded streets.`,
+    name: `${city}`,
+    pictures: [
+      {
+        src: `https://loremflickr.com/300/200?random=${point.destination}`,
+        description: `${city} parliament building`,
+      }
+    ]
+  };
+  mockDests.push(dest);
+}
+
+export {getRandomPoint, mockOffers, mockDests};
