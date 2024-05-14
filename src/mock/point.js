@@ -5,6 +5,7 @@ import { NOW } from '../utils/task';
 const mockOffers = [];
 const mockDests = [];
 //`cfe${d}16cq-10xa-ye10-8077-2fs9a01edcab`
+
 function getRandomPoint() {
 
   const id = crypto.randomUUID();
@@ -44,20 +45,21 @@ function getOffers(point) {
   if(point === undefined) {
     return;
   }
-
   const allOffers = [];
   const offersArr = Object.values(TRANSPORT_OFFERS.find((x) => Object.keys(x)[0] === point.type));
-  for(let i = 0; i < point.offers.length; i++) {
+  if(point.offers.length > 0) {
+    for(let i = 0; i < point.offers.length; i++) {
 
-    const ofEl = offersArr[0][i];
+      const ofEl = offersArr[0][i];
 
-    const of = {
-      id: point.offers[i],
-      title: ofEl.title,
-      price: ofEl.price
-    };
+      const of = {
+        id: point.offers[i],
+        title: ofEl.title,
+        price: ofEl.price
+      };
 
-    allOffers.push(of);
+      allOffers.push(of);
+    }
   }
 
   const offer = {
@@ -67,8 +69,8 @@ function getOffers(point) {
     ]
   };
   mockOffers.push(offer);
-
-  return mockOffers;
+  //console.log(offer)
+  return offer;
 }
 
 function getDests(point) {
@@ -86,6 +88,7 @@ function getDests(point) {
     ]
   };
   mockDests.push(dest);
+
 }
 
-export {getRandomPoint, mockOffers, mockDests};
+export {getRandomPoint, mockOffers, mockDests, getDests, getOffers};
