@@ -79,7 +79,7 @@ export default class EditPointView extends AbstractStatefulView {
   #setDatepickerFrom() {
     if (this._state.point.dateFrom) {
       this.#datepickerFrom = flatpickr(
-        this.element.querySelector('[name=`event-start-time`]'),
+        this.element.querySelector('[name="event-start-time"]'),
         {
           enableTime: true,
           dateFormat: 'd/m/y H:i',
@@ -93,7 +93,7 @@ export default class EditPointView extends AbstractStatefulView {
   #setDatepickerTo() {
     if (this._state.point.dateTo) {
       this.#datepickerTo = flatpickr(
-        this.element.querySelector('[name=`event-end-time`]'),
+        this.element.querySelector('[name="event-end-time"]'),
         {
           enableTime: true,
           dateFormat: 'd/m/y H:i',
