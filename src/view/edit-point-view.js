@@ -1,7 +1,7 @@
 import { editPointTemplate } from '../templates/edit-point-template';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
-import { CITIES } from '../mock/const';
+import { citiesData } from '../mock/const';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -18,7 +18,7 @@ export default class EditPointView extends AbstractStatefulView {
     super();
     this.#offers = offer;
     this.#dest = destination;
-    this.#allDests = CITIES;
+    this.#allDests = citiesData;
     this._setState(EditPointView.parsePointToState({point}));
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
@@ -47,62 +47,17 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   #changeEventTypeHandler = (evt) => {
+    const type = evt.target.value;
     this.updateElement({
       point: {
         ...this._state.point,
-        type: evt.target.value,
+        type: type,
         offers: []
-      }
+      },
     });
   };
 
   reset = (point) => this.updateElement({point});
-
-  #DateFromChangeHandler = ([userDateFrom]) => {
-    this.updateElement({
-      point: {
-        ...this._state.point,
-        dateFrom: userDateFrom.toISOString(),
-      }
-    });
-  };
-
-  #DateToChangeHandler = ([userDateTo]) => {
-    this.updateElement({
-      point: {
-        ...this._state.point,
-        dateTo: userDateTo.toISOString(),
-      }
-    });
-  };
-
-  #setDatepickerFrom() {
-    if (this._state.point.dateFrom) {
-      this.#datepickerFrom = flatpickr(
-        this.element.querySelector('[name=`event-start-time`]'),
-        {
-          enableTime: true,
-          dateFormat: 'd/m/y H:i',
-          defaultDate: this._state.point.dateFrom,
-          onChange: this.#DateFromChangeHandler,
-        },
-      );
-    }
-  }
-
-  #setDatepickerTo() {
-    if (this._state.point.dateTo) {
-      this.#datepickerTo = flatpickr(
-        this.element.querySelector('[name=`event-end-time`]'),
-        {
-          enableTime: true,
-          dateFormat: 'd/m/y H:i',
-          defaultDate: this._state.point.dateTo,
-          onChange: this.#DateToChangeHandler,
-        },
-      );
-    }
-  }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
@@ -115,7 +70,9 @@ export default class EditPointView extends AbstractStatefulView {
   };
 
   #destinationInputHandler = (evt) => {
-    const selectedDest = this.#allDests.find((d) => d === evt.target.value);
+    evt.preventDefault();
+    const selectedDest = this.#allDests.find((d) => d.name === evt.target.value);
+    this.#dest = selectedDest;
     const selectedDestId = (selectedDest) ? selectedDest.id : '';
     this.updateElement({
       point: {
@@ -148,4 +105,50 @@ export default class EditPointView extends AbstractStatefulView {
   static parsePointToState = (point) => (point);
 
   static parseStateToPoint = (state) => state.point;
+
+  #DateFromChangeHandler = ([userDateFrom]) => {
+    this.updateElement({
+      point: {
+        ...this._state.point,
+        dateFrom: userDateFrom.toISOString(),
+      }
+    });
+  };
+
+  #DateToChangeHandler = ([userDateTo]) => {
+    this.updateElement({
+      point: {
+        ...this._state.point,
+        dateTo: userDateTo.toISOString(),
+      }
+    });
+  };
+
+  #setDatepickerFrom() {
+    if (this._state.point.dateFrom) {
+      this.#datepickerFrom = flatpickr(
+        this.element.querySelector('[name="event-start-time"]'),
+        {
+          enableTime: true,
+          dateFormat: 'd/m/y H:i',
+          defaultDate: this._state.point.dateFrom,
+          onChange: this.#DateFromChangeHandler,
+        },
+      );
+    }
+  }
+
+  #setDatepickerTo() {
+    if (this._state.point.dateTo) {
+      this.#datepickerTo = flatpickr(
+        this.element.querySelector('[name="event-end-time"]'),
+        {
+          enableTime: true,
+          dateFormat: 'd/m/y H:i',
+          defaultDate: this._state.point.dateTo,
+          onChange: this.#DateToChangeHandler,
+        },
+      );
+    }
+  }
 }

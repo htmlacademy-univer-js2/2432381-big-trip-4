@@ -1,10 +1,9 @@
 import { normalizeLongDayDate } from '../utils/task';
-import { TRANSPORT_IMAGES, TRANSPORT_OFFERS, CITIES } from '../mock/const';
+import { TRANSPORT_IMAGES, TRANSPORT_OFFERS, citiesData } from '../mock/const';
 
 export const editPointTemplate = (data) => {
   const {dateFrom, dateTo, type, basePrice} = data.state.point || {};
   const {description, name, pictures} = data.dest || {};
-
   const dateF = normalizeLongDayDate(dateFrom);
   const dateT = normalizeLongDayDate(dateTo);
 
@@ -26,7 +25,7 @@ export const editPointTemplate = (data) => {
 
   function cities() {
     const cityArr = [];
-    CITIES.forEach((x) => cityArr.push(`<option value=${x}></option>`));
+    citiesData.forEach((x) => cityArr.push(`<option value=${x.name}></option>`));
     return cityArr;
   }
 
@@ -47,6 +46,7 @@ export const editPointTemplate = (data) => {
           const typeOf = title.split(' ')[0];
 
           let isChecked;
+          //console.log(data)
           if(data.offers.offers.sort()[j] !== undefined) {
             isChecked = data.offers.offers[j].title === title;
           }

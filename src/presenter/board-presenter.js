@@ -9,6 +9,7 @@ import MainInfo from '../view/info-view';
 import PointPresenter from './point-presenter';
 import { SortType } from '../mock/const';
 import { sortPointsArrByPrice, sortPointsArrByTime } from '../utils/task';
+import { citiesData } from '../mock/const';
 
 export default class BoardPresenter {
   #container = null;
@@ -28,6 +29,7 @@ export default class BoardPresenter {
   #boardPoints = [];
   #boardOffers = [];
   #boardDestinations = [];
+  #allDests = null;
 
   #sortedOffers = [];
   #sortedDests = [];
@@ -51,7 +53,7 @@ export default class BoardPresenter {
     this.#boardOffers = [...this.#offersModel.offers];
     this.#boardDestinations = [...this.#destinationsModel.destinations];
     this.#sourcedBoardPoints = [...this.#pointsModel.points];
-    //console.log(this.#boardOffers)
+    this.#allDests = citiesData;
     this.#renderComponents();
   }
 
@@ -129,11 +131,18 @@ export default class BoardPresenter {
   }
 
   #findOffer(point) {
-    return this.#boardOffers.find((x) => x.id === point.offers[0]);
+    const matchedOffers = this.#boardOffers.find((offer) => offer.type === point.type);
+    if (!matchedOffers) { return { type: point.type, offers: [] }; }
+
+    const selectedOffers = matchedOffers.offers.filter((offer) => point.offers.includes(offer.id));
+    return { type: point.type, offers: selectedOffers };
   }
 
   #findDest(point) {
-    return this.#boardDestinations.find((x) => x.id === point.destination);
+    const destination = this.#boardDestinations.find((x) => x.id === point.destination) === undefined ?
+      this.#allDests.find((x) => x.id === point.destination) :
+      this.#boardDestinations.find((x) => x.id === point.destination);
+    return destination;
   }
 
   #renderDynamicComponents() {
@@ -143,7 +152,6 @@ export default class BoardPresenter {
 
       this.#sortedOffers.push(offer);
       this.#sortedDests.push(dest);
-
       this.#renderPoint(this.#boardPoints[i], offer, dest);
     }
   }

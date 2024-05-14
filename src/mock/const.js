@@ -38,6 +38,18 @@ const CITIES = [
   'Helsinki',
 ];
 
+const citiesData = CITIES.map((city, index) => ({
+  id: crypto.randomUUID(),
+  description: `${city}, is a beautiful city, a true Asian pearl, with crowded streets.`,
+  name: city,
+  pictures: [
+    {
+      src: `https://loremflickr.com/300/200?random=${index}`,
+      description: `${city} parliament building`,
+    }
+  ]
+}));
+
 const OFFERS = [
   {ofName: 'Add luggage', price: 30},
   {ofName: 'Switch to comfort class', price: 100},
@@ -69,4 +81,4 @@ const SortType = {
 };
 
 
-export {TRANSPORT_IMAGES, CITIES, OFFERS, FilterType, EmptyFilter, SortType, TRANSPORT_OFFERS};
+export {TRANSPORT_IMAGES, CITIES, OFFERS, FilterType, EmptyFilter, SortType, TRANSPORT_OFFERS, citiesData};
