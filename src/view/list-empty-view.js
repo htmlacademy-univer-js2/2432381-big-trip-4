@@ -2,14 +2,14 @@ import { createListEmpty } from '../templates/list-empty-template';
 import AbstractView from '../framework/view/abstract-view';
 
 export default class ListEmpty extends AbstractView {
-  #filters = null;
+  #filterType = null;
 
-  constructor({filters}) {
+  constructor({filterType}) {
     super();
-    this.#filters = filters;
+    this.#filterType = filterType;
   }
 
   get template() {
-    return createListEmpty(this.#filters);
+    return createListEmpty(this.#filterType);
   }
 }

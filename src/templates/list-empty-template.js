@@ -1,12 +1,10 @@
-function createListEmpty(filters) {
+import { EmptyFilter } from '../mock/const';
 
-  const filtersList = document.querySelectorAll('.trip-filters__filter input');
-  const checkedFilterType = filtersList[Array.from(filtersList).findIndex((x) => x.outerHTML.indexOf('checked') !== -1)].value;
-  const msg = filters.find((x) => x.type === checkedFilterType).txtMsg;
+function createListEmpty(filterType) {
 
-  return `<main class="page-body__page-main  page-main">
-  <div class="page-body__container">
-    <section class="trip-events">
+  const msg = EmptyFilter.find((filter) => filter.type === filterType).emptyMsg;
+
+  return `<section class="trip-events">
       <h2 class="visually-hidden">Trip events</h2>
 
       <p class="trip-events__msg">${msg}</p>
@@ -18,9 +16,7 @@ function createListEmpty(filters) {
           * Present — 'There are no present events now';
           * Future — 'There are no future events now'.
       -->
-    </section>
-  </div>
-</main>`;
+    </section>`;
 }
 
 export { createListEmpty };
