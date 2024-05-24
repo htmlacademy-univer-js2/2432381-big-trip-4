@@ -2,10 +2,12 @@ import { createListSortElement } from '../templates/sort-template';
 import AbstractView from '../framework/view/abstract-view';
 
 export default class ListSortElement extends AbstractView {
+  #currentSortType = null;
   #handleSortTypeChange = null;
 
-  constructor({onSortTypeChange}) {
+  constructor({currentSortType, onSortTypeChange}) {
     super();
+    this.#currentSortType = currentSortType;
     this.#handleSortTypeChange = onSortTypeChange;
 
     this.element.addEventListener('click', this.#SortTypeChangeHandler);
@@ -13,7 +15,7 @@ export default class ListSortElement extends AbstractView {
   }
 
   get template() {
-    return createListSortElement();
+    return createListSortElement(this.#currentSortType);
   }
 
   #SortTypeChangeHandler = (evt) => {

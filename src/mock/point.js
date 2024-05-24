@@ -1,10 +1,23 @@
 import { getRandomArrayElement, getRandomInt } from '../utils/common';
 import { TRANSPORT_IMAGES, TRANSPORT_OFFERS, CITIES } from './const';
 import { NOW } from '../utils/task';
+import dayjs from 'dayjs';
 
 const mockOffers = [];
 const mockDests = [];
 //`cfe${d}16cq-10xa-ye10-8077-2fs9a01edcab`
+
+const citiesData = CITIES.map((city, index) => ({
+  id: crypto.randomUUID(),
+  description: `${city}, is a beautiful city, a true Asian pearl, with crowded streets.`,
+  name: city,
+  pictures: [
+    {
+      src: `https://loremflickr.com/300/200?random=${index}`,
+      description: `${city} parliament building`,
+    }
+  ]
+}));
 
 function getRandomPoint() {
 
@@ -12,11 +25,15 @@ function getRandomPoint() {
   const price = getRandomInt(20, 2000);
   const isFavorite = getRandomInt(0, 2) === 1;
   const type = getRandomArrayElement(TRANSPORT_IMAGES);
-  const dateFrom = NOW.toISOString();
-  const dateTo = NOW.set('day', getRandomInt(1, 10)).set('hour', getRandomInt(NOW.$H, 24)).toISOString();
+  const dates = [];
+  dates.push(NOW.subtract(getRandomInt(0, 20), 'day').subtract(getRandomInt(0, 24), 'hour').subtract(getRandomInt(1, 50), 'minute').toISOString());
+  dates.push(NOW.add(getRandomInt(0, 20), 'day').add(getRandomInt(0, 24), 'hour').add(getRandomInt(1, 50), 'minute').toISOString());
+  dates.push(NOW.toISOString());
+  const dateFrom = getRandomArrayElement(dates);
+  const dateTo = dayjs(dateFrom).add(getRandomInt(0, 20), 'day').add(getRandomInt(0, 24), 'hour').add(getRandomInt(1, 50), 'minute').toISOString();
   //const d = getRandomInt(4,8);
   const offersIds = [];
-  const destId = crypto.randomUUID();
+  const destId = getRandomArrayElement(citiesData).id;
 
   for(let i = 0; i < getRandomInt(0,4); i++) {
     offersIds.push(crypto.randomUUID());
@@ -91,4 +108,4 @@ function getDests(point) {
 
 }
 
-export {getRandomPoint, mockOffers, mockDests, getDests, getOffers};
+export {getRandomPoint, mockOffers, mockDests, getDests, getOffers, citiesData};

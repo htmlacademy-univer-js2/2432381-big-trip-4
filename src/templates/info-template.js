@@ -1,18 +1,38 @@
 import { normalizeDate, normalizeDay } from '../utils/task';
 
-function createMainInfo(points, offers, dests){
-  const firstDest = dests[0].name;
-  const midDest = points.points.length > 3 || points.points.length === 1 ? '...' : dests[1].name;
-  const lastDest = dests[dests.length - 1].name;
+function createMainInfo(points = { points: [] }, offers, dests) {
+  const pointDestinations = points.points.map((point) => point.destination);
+  const matchedDests = dests.filter((dest) => pointDestinations.includes(dest.id));
+
+  dests = matchedDests;
+
+  const firstDest = dests.length > 0 ? dests[0].name : '';
+  const midDest = points.points.length > 3 || points.points.length === 1 || dests.length < 2 ? '...' : dests[1].name || '';
+  const lastDest = dests.length > 0 ? dests[dests.length - 1].name : '';
 
   const pricesArr = [];
-  points.points.forEach((x) => pricesArr.push(x.basePrice));
-  offers.forEach((x) => x.offers.forEach((y) => { if(y.price !== undefined){pricesArr.push(y.price);} }));
 
-  const totalPrice = pricesArr.reduce((x, y) => x + y);
+  // Ensure points and offers are arrays before iterating over them
+  if (Array.isArray(points.points)) {
+    points.points.forEach((x) => pricesArr.push(x.basePrice || 0));
+  }
 
-  const lastDate = normalizeDay(points.points[points.points.length - 1].dateFrom, points.points[0].dateFrom);
-  const firstDate = normalizeDate(points.points[0].dateFrom);
+  if (Array.isArray(offers)) {
+    offers.forEach((x) => {
+      if (Array.isArray(x.offers)) {
+        x.offers.forEach((y) => {
+          if (y.price !== undefined) {
+            pricesArr.push(y.price);
+          }
+        });
+      }
+    });
+  }
+
+  const totalPrice = pricesArr.reduce((x, y) => x + y, 0);
+
+  const lastDate = points.points.length > 0 ? normalizeDay(points.points[points.points.length - 1].dateTo, points.points[0].dateTo) : '';
+  const firstDate = points.points.length > 0 ? normalizeDate(points.points[0].dateFrom) : '';
 
   return `<section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">

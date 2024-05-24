@@ -8,8 +8,8 @@ export const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
 };
 
-function updateItem(items, update) {
+/* function updateItem(items, update) {
   return items.map((item) => item.id === update.id ? update : item);
-}
+} */
 
-export { getRandomArrayElement, updateItem };
+export { getRandomArrayElement };

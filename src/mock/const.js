@@ -38,7 +38,7 @@ const CITIES = [
   'Helsinki',
 ];
 
-const citiesData = CITIES.map((city, index) => ({
+/* const citiesData = CITIES.map((city, index) => ({
   id: crypto.randomUUID(),
   description: `${city}, is a beautiful city, a true Asian pearl, with crowded streets.`,
   name: city,
@@ -48,7 +48,7 @@ const citiesData = CITIES.map((city, index) => ({
       description: `${city} parliament building`,
     }
   ]
-}));
+})); */
 
 const OFFERS = [
   {ofName: 'Add luggage', price: 30},
@@ -80,5 +80,16 @@ const SortType = {
   OFFERS: 'Offers',
 };
 
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
 
-export {TRANSPORT_IMAGES, CITIES, OFFERS, FilterType, EmptyFilter, SortType, TRANSPORT_OFFERS, citiesData};
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export {TRANSPORT_IMAGES, CITIES, OFFERS, FilterType, SortType, EmptyFilter, TRANSPORT_OFFERS, UserAction, UpdateType};

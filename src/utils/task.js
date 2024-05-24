@@ -89,5 +89,8 @@ function sortPointsArrByTime (a, b) {
   return ft - st;
 }
 
+function isDatesEqual(dateA, dateB) {
+  return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateA, 'D');
+}
 
-export { sortPointsArrByDay, normalizeDate, normalizeHour, normalizeLongDayDate, normalizeDay, futureFilterPoints, presentFilterPoints, NOW, pastFilterPoints, sortPointsArrByPrice, sortPointsArrByTime };
+export { sortPointsArrByDay, normalizeDate, normalizeHour, normalizeLongDayDate, normalizeDay, futureFilterPoints, presentFilterPoints, NOW, pastFilterPoints, sortPointsArrByPrice, sortPointsArrByTime, isDatesEqual };
