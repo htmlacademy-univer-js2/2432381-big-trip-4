@@ -5,13 +5,13 @@ import PointView from '../view/point-view';
 import ListSortElement from '../view/sort-view';
 import ListEmpty from '../view/list-empty-view';
 import MainInfo from '../view/info-view';
+import LoadingView from '../view/loading-view';
 import PointPresenter from './point-presenter';
 import { filter } from '../utils/filter';
 import { SortType, UpdateType, UserAction } from '../mock/const';
 import { sortPointsArrByPrice, sortPointsArrByTime, sortPointsArrByDay } from '../utils/task';
 import { FilterType } from '../mock/const';
 import NewPointPresenter from './new-point-presenter';
-import { citiesData } from '../mock/point';
 
 export default class BoardPresenter {
   #container = null;
@@ -26,6 +26,7 @@ export default class BoardPresenter {
   #eventListComponent = null;
   #newPointComponent = null;
   #noPointsComponent = null;
+  #loadingComponent = new LoadingView();
 
   #pointPresenter = new Map();
   #newPointPresenter = null;
@@ -35,6 +36,7 @@ export default class BoardPresenter {
 
   #allDests = null;
   #curDests = [];
+  #isLoading = true;
 
   constructor({container, headerContainer, eventListComponent, editPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, noPointsComponent, filterModel, onNewPointDestroy}) {
     this.#container = container;
@@ -62,7 +64,6 @@ export default class BoardPresenter {
   }
 
   init() {
-    this.#allDests = citiesData;
     this.#renderComponents();
 
   }
@@ -83,16 +84,12 @@ export default class BoardPresenter {
 
     switch(this.#currentSortType) {
       case SortType.PRICE:
-        //return [this.#pointsModel.points].sort(sortPointsArrByPrice);
         return filteredPoints.sort(sortPointsArrByPrice);
       case SortType.TIME:
-        //return [this.#pointsModel.points].sort(sortPointsArrByTime);
         return filteredPoints.sort(sortPointsArrByTime);
       case SortType.DAY:
-        //return [this.#pointsModel.points].sort(sortPointsArrByTime);
         return filteredPoints.sort(sortPointsArrByDay);
     }
-    //return this.#pointsModel.points;
     return filteredPoints;
   }
 
@@ -116,6 +113,7 @@ export default class BoardPresenter {
     this.#pointPresenter.clear();
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
     remove(this.#mainInfoComponent);
     if(this.#noPointsComponent) {
       remove(this.#noPointsComponent);
@@ -150,6 +148,8 @@ export default class BoardPresenter {
       eventListComponent: this.#eventListComponent,
       onDataChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange,
+      destinations: this.destinations,
+      offers: this.offers,
     });
 
     pointPresenter.init(point, offer, destination);
@@ -184,6 +184,11 @@ export default class BoardPresenter {
         this.#clearBoard({resetSortType: true});
         this.#renderComponents();
         break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderComponents();
+        break;
     }
   };
 
@@ -194,11 +199,8 @@ export default class BoardPresenter {
 
   #renderMainInfo() {
     if (this.points.length > 0) {
-      /* for(let i = 0; i < this.points.length; i++) {
-      } */
-      //console.log(this.points)
-      //console.log(this.#allDests)
-      this.#mainInfoComponent = new MainInfo({ points: this.points, offers: this.offers, dests: this.#allDests });
+      const dests = [this.#findDest(this.points[0]), this.#findDest(this.points[Math.floor(this.points.length / 2)]), this.#findDest(this.points[this.points.length - 1])];
+      this.#mainInfoComponent = new MainInfo({ points: this.points, offers: this.offers, dests: dests });
       render(this.#mainInfoComponent, this.#headerContainer, RenderPosition.AFTERBEGIN);
     }
   }
@@ -210,6 +212,10 @@ export default class BoardPresenter {
       });
       render(this.#noPointsComponent, this.#container, RenderPosition.AFTERBEGIN);
     }
+  }
+
+  #renderLoading() {
+    render(this.#loadingComponent, this.#container, RenderPosition.AFTERBEGIN);
   }
 
   #findOffer(point) {
@@ -230,8 +236,11 @@ export default class BoardPresenter {
 
   #renderDynamicComponents() {
     render(this.#eventListComponent, this.#container);
+    if(this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
     this.#renderSort();
-    //this.#renderMainInfo();
     if (this.points.length === 0) {
       this.#renderNoPoints();
       remove(this.#sortComponent);

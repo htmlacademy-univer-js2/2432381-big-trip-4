@@ -1,12 +1,10 @@
 import { normalizeLongDayDate } from '../utils/task';
-import { TRANSPORT_IMAGES, TRANSPORT_OFFERS } from '../mock/const';
-import { citiesData } from '../mock/point';
+import { TRANSPORT_IMAGES } from '../mock/const';
 import he from '../../node_modules/he';
 
-export const editPointTemplate = (data) => {
+export const editPointTemplate = (data, allOffers, allDests) => {
   const point = data.state.point || {};
   const dest = data.dest || {};
-
   const { dateFrom = '', dateTo = '', type = '', basePrice = '' } = point;
   const { description = '', name = '', pictures = [] } = dest;
   const dateF = dateFrom ? normalizeLongDayDate(dateFrom) : '';
@@ -26,17 +24,16 @@ export const editPointTemplate = (data) => {
     return transportTypes.join('');
   }
 
-  function cities() {
-    return citiesData.map((city) => `<option value="${city.name}"></option>`).join('');
+  function getCities() {
+    const cities = [];
+    allDests.forEach((el) => { if(!cities.includes(el.name)) { cities.push(`<option value="${el.name}"></option>`); } });
+    return cities.join('');
   }
 
   function offersElements() {
-    const typeOffers = TRANSPORT_OFFERS.reduce((acc, offerGroup) => {
-      const trType = Object.keys(offerGroup)[0];
-      const offersArr = offerGroup[trType];
-
-      if (trType === type) {
-        offersArr.forEach((offer) => {
+    const typeOffers = allOffers.reduce((acc, offerGroup) => {
+      if (offerGroup.type === type) {
+        offerGroup.offers.forEach((offer) => {
           const title = offer.title;
           const price = offer.price;
           const typeOf = title.split(' ')[0];
@@ -56,9 +53,9 @@ export const editPointTemplate = (data) => {
 
       return acc;
     }, []);
-
     return typeOffers.join('');
   }
+
   const offersHtml =
     `<div class="event__available-offers">
       ${offersElements()}
@@ -91,7 +88,7 @@ export const editPointTemplate = (data) => {
             </label>
             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(String(name))}" list="destination-list-1">
             <datalist id="destination-list-1">
-              ${cities()}
+              ${getCities()}
             </datalist>
           </div>
 

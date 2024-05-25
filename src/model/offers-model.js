@@ -1,10 +1,24 @@
 import Observable from '../framework/observable';
-import { mockOffers } from '../mock/point';
 
 export default class OffersModel extends Observable{
-  #offers = mockOffers;
+  #offers = [];
+  #offersApiService = null;
+
+  constructor({offersApiService}) {
+    super();
+    this.#offersApiService = offersApiService;
+  }
 
   get offers(){
     return this.#offers;
+  }
+
+  async init() {
+    try {
+      const offers = await this.#offersApiService.offers;
+      this.#offers = offers.map((offer) => offer);
+    } catch(err) {
+      this.#offers = [];
+    }
   }
 }
