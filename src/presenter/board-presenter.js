@@ -64,7 +64,6 @@ export default class BoardPresenter {
   }
 
   init() {
-    this.#allDests = citiesData;
     this.#renderComponents();
 
   }
