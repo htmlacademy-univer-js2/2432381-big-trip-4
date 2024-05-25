@@ -76,7 +76,16 @@ function presentFilterPoints (point) {
 }
 
 function sortPointsArrByDay (a, b) {
-  return Number(dayjs(a.dateFrom).format(DAY_FORMAT)) - Number(dayjs(b.dateFrom).format(DAY_FORMAT));
+  const dateA = dayjs(a.dateFrom);
+  const dateB = dayjs(b.dateFrom);
+
+  if (dateA.isBefore(dateB)) {
+    return -1;
+  } else if (dateA.isAfter(dateB)) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 function sortPointsArrByPrice (a, b) {

@@ -90,6 +90,7 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };
 
 export {TRANSPORT_IMAGES, CITIES, OFFERS, FilterType, SortType, EmptyFilter, TRANSPORT_OFFERS, UserAction, UpdateType};

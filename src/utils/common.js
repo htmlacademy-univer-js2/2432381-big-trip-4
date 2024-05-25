@@ -1,4 +1,4 @@
-function getRandomArrayElement (points) {
+/* function getRandomArrayElement (points) {
   return points[Math.floor(Math.random() * points.length)];
 }
 
@@ -12,4 +12,4 @@ export const getRandomInt = (min, max) => {
   return items.map((item) => item.id === update.id ? update : item);
 } */
 
-export { getRandomArrayElement };
+export { getRandomArrayElement }; */

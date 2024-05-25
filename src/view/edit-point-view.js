@@ -1,7 +1,6 @@
 import { editPointTemplate } from '../templates/edit-point-template';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
-import { citiesData } from '../mock/point';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -14,12 +13,14 @@ export default class EditPointView extends AbstractStatefulView {
   #datepickerFrom = null;
   #datepickerTo = null;
   #allDests = null;
+  #allOffers = null;
 
-  constructor({ point, offer, destination, onFormSubmit, onFormClose, onDeleteClick }) {
+  constructor({ point, offer, destination, onFormSubmit, onFormClose, onDeleteClick, allDestinations, allOffers }) {
     super();
     this.#offers = offer;
     this.#dest = destination;
-    this.#allDests = citiesData;
+    this.#allDests = allDestinations;
+    this.#allOffers = allOffers;
     this._setState(EditPointView.parsePointToState({point}));
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
@@ -45,7 +46,7 @@ export default class EditPointView extends AbstractStatefulView {
       state: this._state,
       offers: this.#offers,
       dest: this.#dest,
-    });
+    }, this.#allOffers, this.#allDests);
 
   }
 

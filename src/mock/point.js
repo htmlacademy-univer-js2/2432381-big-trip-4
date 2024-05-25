@@ -1,4 +1,4 @@
-import { getRandomArrayElement, getRandomInt } from '../utils/common';
+/* import { getRandomArrayElement, getRandomInt } from '../utils/common';
 import { TRANSPORT_IMAGES, TRANSPORT_OFFERS, CITIES } from './const';
 import { NOW } from '../utils/task';
 import dayjs from 'dayjs';
@@ -109,3 +109,4 @@ function getDests(point) {
 }
 
 export {getRandomPoint, mockOffers, mockDests, getDests, getOffers, citiesData};
+ */
