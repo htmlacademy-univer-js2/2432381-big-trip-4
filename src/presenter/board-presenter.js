@@ -12,7 +12,6 @@ import { SortType, UpdateType, UserAction } from '../mock/const';
 import { sortPointsArrByPrice, sortPointsArrByTime, sortPointsArrByDay } from '../utils/task';
 import { FilterType } from '../mock/const';
 import NewPointPresenter from './new-point-presenter';
-import { citiesData } from '../mock/point';
 
 export default class BoardPresenter {
   #container = null;
