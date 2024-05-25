@@ -7,14 +7,12 @@ export default class DestinationsModel extends Observable{
   constructor({destinationsApiService}) {
     super();
     this.#destinationsApiService = destinationsApiService;
-
   }
 
   async init() {
     try {
       const destinations = await this.#destinationsApiService.destinations;
       this.#destinations = destinations.map((dest) => dest);
-      //console.log(this.#destinations)
     } catch(err) {
       this.#destinations = [];
     }

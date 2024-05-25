@@ -2,9 +2,8 @@ import { normalizeDate, normalizeDay } from '../utils/task';
 
 function createMainInfo(points = { points: [] }, offers, dests) {
   const pointDestinations = points.points.map((point) => point.destination);
-  const matchedDests = dests.filter((dest) => pointDestinations.includes(dest.id));
+  dests = dests.filter((dest) => pointDestinations.includes(dest.id));
 
-  dests = matchedDests;
 
   const firstDest = dests.length > 0 ? dests[0].name : '';
   const midDest = points.points.length > 3 || points.points.length === 1 || dests.length < 2 ? '...' : dests[1].name || '';
@@ -17,17 +16,13 @@ function createMainInfo(points = { points: [] }, offers, dests) {
     points.points.forEach((x) => pricesArr.push(x.basePrice || 0));
   }
 
-  if (Array.isArray(offers)) {
-    offers.forEach((x) => {
-      if (Array.isArray(x.offers)) {
-        x.offers.forEach((y) => {
-          if (y.price !== undefined) {
-            pricesArr.push(y.price);
-          }
-        });
+  offers.forEach((typeOffers) => {
+    typeOffers.offers.forEach((offer) => {
+      if (offer.price !== undefined) {
+        pricesArr.push(offer.price);
       }
     });
-  }
+  });
 
   const totalPrice = pricesArr.reduce((x, y) => x + y, 0);
 

@@ -1,22 +1,14 @@
-//import { getRandomPoint } from '../mock/point.js';
-//import { sortPointsArrByDay } from '../utils/task.js';
-//import { getRandomInt } from '../utils/common.js';
 import Observable from '../framework/observable.js';
 import { UpdateType } from '../mock/const.js';
-
-//const POINTS_COUNT = getRandomInt(0, 2);
 
 export default class PointsModel extends Observable{
   #pointsApiService = null;
   #points = [];
-  //#points = Array.from({length: POINTS_COUNT}, getRandomPoint).sort(sortPointsArrByDay);
+
 
   constructor({pointsApiService}) {
     super();
     this.#pointsApiService = pointsApiService;
-    /* this.#pointsApiService.points.then((points) => {
-      console.log(points.map(this.#adaptToClient));
-    }); */
   }
 
   get points() {
@@ -84,20 +76,13 @@ export default class PointsModel extends Observable{
   }
 
   #adaptToClient(point) {
-    const adaptedPoint = {...point,
-      basePrice: point['base_price'],
-      dateFrom: point['date_from'],
-      dateTo: point['date_to'],
-      isFavorite: point['is_favorite'],
-
+    const { 'base_price': basePrice, 'date_from': dateFrom, 'date_to': dateTo, 'is_favorite': isFavorite, ...rest } = point;
+    return {
+      ...rest,
+      basePrice,
+      dateFrom,
+      dateTo,
+      isFavorite,
     };
-
-    // Ненужные ключи мы удаляем
-    delete adaptedPoint['base_price'];
-    delete adaptedPoint['date_from'];
-    delete adaptedPoint['date_to'];
-    delete adaptedPoint['is_favorite'];
-
-    return adaptedPoint;
   }
 }

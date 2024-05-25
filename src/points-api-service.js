@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import ApiService from './framework/api-service.js';
 
 const Method = {
@@ -9,63 +10,54 @@ const Method = {
 
 export default class PointsApiService extends ApiService {
   get points() {
-    return this._load({url: 'points'})
-      .then(ApiService.parseResponse);
+    return this._fetchData({ url: 'points' });
   }
 
   async updatePoint(point) {
-    const response = await this._load({
+    return this._fetchData({
       url: `points/${point.id}`,
       method: Method.PUT,
       body: JSON.stringify(this.#adaptToServer(point)),
-      headers: new Headers({'Content-Type': 'application/json'}),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     });
-
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
   }
 
   async addPoint(point) {
-    const response = await this._load({
+    return this._fetchData({
       url: 'points',
       method: Method.POST,
       body: JSON.stringify(this.#adaptToServer(point)),
-      headers: new Headers({'Content-Type': 'application/json'}),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     });
-
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
   }
 
   async deletePoint(point) {
-    const response = await this._load({
+    return this._fetchData({
       url: `points/${point.id}`,
       method: Method.DELETE,
       body: JSON.stringify(point),
-      headers: new Headers({'Content-Type': 'application/json'}),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     });
+  }
 
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
+  async _fetchData(config) {
+    try {
+      const response = await this._load(config);
+      return await ApiService.parseResponse(response);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+      throw error;
+    }
   }
 
   #adaptToServer(point) {
-    const adaptedPoint = {...point,
-      'base_price': point.basePrice,
-      'date_from': point.dateFrom,
-      'date_to': point.dateTo,
-      'is_favorite': point.isFavorite,
+    const { basePrice, dateFrom, dateTo, isFavorite, ...rest } = point;
+    return {
+      ...rest,
+      'base_price': basePrice,
+      'date_from': dateFrom,
+      'date_to': dateTo,
+      'is_favorite': isFavorite,
     };
-
-    // Ненужные ключи мы удаляем
-    delete adaptedPoint.basePrice;
-    delete adaptedPoint.dateFrom;
-    delete adaptedPoint.dateTo;
-    delete adaptedPoint.isFavorite;
-
-    return adaptedPoint;
   }
 }
