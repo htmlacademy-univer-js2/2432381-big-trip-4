@@ -12,7 +12,7 @@ function createListSortElement(currentSortType) {
       const type = Object.keys(SortType)[i].toLowerCase();
 
       typesArr.push(`<div class="trip-sort__item  trip-sort__item--${type}">
-        <input id="sort-${type}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${type}"${isDisabled}${isDisabled === 'disabled' ? '' : isChecked}>
+        <input id="sort-${type}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${type}" ${isDisabled} ${isDisabled ? '' : isChecked}>
         <label class="trip-sort__btn" for="sort-${type}" data-sort-type="${SortType[Object.keys(SortType)[i]]}">${type.toUpperCase()}</label>
       </div>`);
     }
