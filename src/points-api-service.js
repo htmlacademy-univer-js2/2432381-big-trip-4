@@ -32,12 +32,12 @@ export default class PointsApiService extends ApiService {
   }
 
   async deletePoint(point) {
-    return this._fetchData({
+    const response = await this._load({
       url: `points/${point.id}`,
       method: Method.DELETE,
-      body: JSON.stringify(point),
-      headers: new Headers({ 'Content-Type': 'application/json' }),
     });
+
+    return response;
   }
 
   async _fetchData(config) {

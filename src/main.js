@@ -66,12 +66,15 @@ render(newPointButtonComponent, tripMain);
 
 const awaiter = async () => {
   await Promise.all([
+    filterPresenter.init(),
     offersModel.init(),
     destinationsModel.init(),
   ]);
-  pointsModel.init();
-  filterPresenter.init();
   boardPresenter.init();
+  pointsModel.init();
+  //pointsModel.init();
+  //filterPresenter.init();
+  //boardPresenter.init();
 };
 awaiter();
 

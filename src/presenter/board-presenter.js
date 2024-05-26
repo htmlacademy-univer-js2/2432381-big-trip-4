@@ -12,6 +12,12 @@ import { SortType, UpdateType, UserAction } from '../mock/const';
 import { sortPointsArrByPrice, sortPointsArrByTime, sortPointsArrByDay } from '../utils/task';
 import { FilterType } from '../mock/const';
 import NewPointPresenter from './new-point-presenter';
+import UiBlocker from '../framework/ui-blocker/ui-blocker';
+
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
 
 export default class BoardPresenter {
   #container = null;
@@ -34,10 +40,15 @@ export default class BoardPresenter {
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
 
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT
+  });
+
   #allDests = null;
   #curDests = [];
   #isLoading = true;
-
+  #onNewPointDestroy = null;
   constructor({container, headerContainer, eventListComponent, editPoint, infoView, pointView, pointsModel, offersModel, destinationsModel, noPointsComponent, filterModel, onNewPointDestroy}) {
     this.#container = container;
     this.#headerContainer = headerContainer;
@@ -56,16 +67,12 @@ export default class BoardPresenter {
     this.#destinationsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
 
-    this.#newPointPresenter = new NewPointPresenter({
-      pointListContainer: this.#eventListComponent.element,
-      onDataChange: this.#handleViewAction,
-      onDestroy: onNewPointDestroy,
-    });
+    this.#onNewPointDestroy = onNewPointDestroy;
   }
 
   init() {
     this.#renderComponents();
-
+    this.#newPointPresenter = this.#createNewPointPresenter(this.#onNewPointDestroy);
   }
 
   createPoint() {
@@ -75,6 +82,16 @@ export default class BoardPresenter {
     if(this.#noPointsComponent) {
       remove(this.#noPointsComponent);
     }
+  }
+
+  #createNewPointPresenter(onNewPointDestroy) {
+    return new NewPointPresenter({
+      pointListContainer: this.#eventListComponent.element,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewPointDestroy,
+      allDests: this.destinations,
+      allOffers: this.offers,
+    });
   }
 
   get points() {
@@ -157,18 +174,37 @@ export default class BoardPresenter {
 
   }
 
-  #handleViewAction = (actionType, updateType, update) => {
+  #handleViewAction = async (actionType, updateType, update) => {
+    this.#uiBlocker.block();
     switch(actionType) {
       case UserAction.UPDATE_POINT:
-        this.#pointsModel.updatePoint(updateType, update);
+        if(update === undefined) { this.#uiBlocker.unblock(); return; }
+        this.#pointPresenter.get(update.id).setSaving();
+        try {
+          await this.#pointsModel.updatePoint(updateType, update);
+        } catch(err) {
+          this.#pointPresenter.get(update.id).setAborting();
+        }
         break;
       case UserAction.ADD_POINT:
-        this.#pointsModel.addPoint(updateType, update);
+        this.#newPointPresenter.setSaving();
+        try {
+          await this.#pointsModel.addPoint(updateType, update);
+        } catch(err) {
+          this.#newPointPresenter.setAborting();
+        }
         break;
       case UserAction.DELETE_POINT:
-        this.#pointsModel.deletePoint(updateType, update);
+        if(update === undefined) { this.#uiBlocker.unblock(); return; }
+        this.#pointPresenter.get(update.id).setDeleting();
+        try {
+          await this.#pointsModel.deletePoint(updateType, update);
+        } catch(err) {
+          this.#pointPresenter.get(update.id).setAborting();
+        }
         break;
     }
+    this.#uiBlocker.unblock();
   };
 
   #handleModelEvent = (updateType, data) => {
@@ -200,7 +236,9 @@ export default class BoardPresenter {
   #renderMainInfo() {
     if (this.points.length > 0) {
       const dests = [this.#findDest(this.points[0]), this.#findDest(this.points[Math.floor(this.points.length / 2)]), this.#findDest(this.points[this.points.length - 1])];
-      this.#mainInfoComponent = new MainInfo({ points: this.points, offers: this.offers, dests: dests });
+      const curOffers = [];
+      this.points.forEach((point) => curOffers.push(this.#findOffer(point).offers));
+      this.#mainInfoComponent = new MainInfo({ points: this.points, offers: curOffers.flat(Infinity), dests: dests });
       render(this.#mainInfoComponent, this.#headerContainer, RenderPosition.AFTERBEGIN);
     }
   }
