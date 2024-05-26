@@ -38,7 +38,7 @@ export const editPointTemplate = (data, allOffers, allDests) => {
         offerGroup.offers.forEach((offer) => {
           const title = offer.title;
           const price = offer.price;
-          const typeOf = title.split(' ')[0];
+          const typeOf = [title];
 
           const isChecked = data.offers && data.offers.offers && data.offers.offers.some((o) => o.title === title);
 
