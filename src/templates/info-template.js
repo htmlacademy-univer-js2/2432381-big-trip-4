@@ -9,17 +9,12 @@ function createMainInfo(points = { points: [] }, offers, dests) {
 
   const pricesArr = [];
 
-  // Ensure points and offers are arrays before iterating over them
   if (Array.isArray(points.points)) {
     points.points.forEach((x) => pricesArr.push(x.basePrice || 0));
   }
 
-  offers.forEach((typeOffers) => {
-    typeOffers.offers.forEach((offer) => {
-      if (offer.price !== undefined) {
-        pricesArr.push(offer.price);
-      }
-    });
+  offers.forEach((of) => {
+    pricesArr.push(of.price);
   });
 
   const totalPrice = pricesArr.reduce((x, y) => x + y, 0);

@@ -236,7 +236,9 @@ export default class BoardPresenter {
   #renderMainInfo() {
     if (this.points.length > 0) {
       const dests = [this.#findDest(this.points[0]), this.#findDest(this.points[Math.floor(this.points.length / 2)]), this.#findDest(this.points[this.points.length - 1])];
-      this.#mainInfoComponent = new MainInfo({ points: this.points, offers: this.offers, dests: dests });
+      const curOffers = [];
+      this.points.forEach((point) => curOffers.push(this.#findOffer(point).offers));
+      this.#mainInfoComponent = new MainInfo({ points: this.points, offers: curOffers.flat(Infinity), dests: dests });
       render(this.#mainInfoComponent, this.#headerContainer, RenderPosition.AFTERBEGIN);
     }
   }

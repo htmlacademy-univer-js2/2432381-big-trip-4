@@ -1,7 +1,6 @@
 import { editPointTemplate } from '../templates/edit-point-template';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
-
 import 'flatpickr/dist/flatpickr.min.css';
 
 export default class EditPointView extends AbstractStatefulView {
@@ -87,11 +86,22 @@ export default class EditPointView extends AbstractStatefulView {
   };
 
   #changeOffersHandler = () => {
-    const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+    let checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+    checkBoxes = checkBoxes.map((el) => el.id);
+    checkBoxes = checkBoxes.map((el) => this.element.querySelector(`label[for='${el}']`).children[0].textContent);
+    const typeOffers = this.#allOffers.find((offer) => offer.type === this._state.point.type).offers;
+    checkBoxes = checkBoxes.map((name) => {
+      for(let i = 0; i < typeOffers.length; i++) {
+        if(name === typeOffers[i].title) {
+          return typeOffers[i].id;
+        }
+      }
+    });
+
     this._setState({
       point: {
         ...this._state.point,
-        offers: checkBoxes.map((e) => e.dataset.offerId)
+        offers: checkBoxes
       }
     });
   };
