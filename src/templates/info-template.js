@@ -3,7 +3,6 @@ import { normalizeDate, normalizeDay } from '../utils/task';
 function createMainInfo(points = { points: [] }, offers, dests) {
   const pointDestinations = points.points.map((point) => point.destination);
   dests = dests.filter((dest) => pointDestinations.includes(dest.id));
-  
   const firstDest = dests.length > 0 ? dests[0].name : '';
   const midDest = points.points.length > 3 || points.points.length === 1 || dests.length < 2 ? '...' : dests[1].name || '';
   const lastDest = dests.length > 0 ? dests[dests.length - 1].name : '';
