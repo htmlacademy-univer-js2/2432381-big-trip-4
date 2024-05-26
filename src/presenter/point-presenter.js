@@ -125,10 +125,8 @@ export default class PointPresenter {
       update,
       offer,
       dest,
-      //{ update },
-      //offer,dest
     );
-    this.#replaceFormToPoint();
+    //this.#replaceFormToPoint();
   };
 
   #handleFavoriteClick = () => {
@@ -146,4 +144,39 @@ export default class PointPresenter {
       point,
     );
   };
+
+  setSaving() {
+    if(this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isSaving:true,
+      });
+    }
+  }
+
+  setDeleting() {
+    if(this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
+
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#pointComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#pointEditComponent.shake(resetFormState);
+  }
 }

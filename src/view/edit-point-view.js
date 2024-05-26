@@ -106,9 +106,24 @@ export default class EditPointView extends AbstractStatefulView {
     });
   };
 
-  static parsePointToState = (point) => (point);
+  static parsePointToState(point) {
+    return {
+      ...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
+    };
+  }
 
-  static parseStateToPoint = (state) => state.point;
+  static parseStateToPoint(state) {
+    const point = {...state.point};
+
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
+    return point;
+  }
 
   #DateFromChangeHandler = ([userDateFrom]) => {
     this.updateElement({

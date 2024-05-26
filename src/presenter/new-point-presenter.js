@@ -8,11 +8,15 @@ export default class NewPointPresenter {
   #handleDestroy = null;
 
   #pointEditComponent = null;
+  #allDests = null;
+  #allOffers = null;
 
-  constructor({pointListContainer, onDataChange, onDestroy}) {
+  constructor({pointListContainer, onDataChange, onDestroy, allDests, allOffers}) {
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
+    this.#allDests = allDests;
+    this.#allOffers = allOffers;
   }
 
   init() {
@@ -24,6 +28,8 @@ export default class NewPointPresenter {
       onFormSubmit: this.#handleFormSubmit,
       onDeleteClick: this.#handleDeleteClick,
       onFormClose: this.#handleFormCloseClick,
+      allDestinations: this.#allDests,
+      allOffers: this.#allOffers,
     });
 
     render(this.#pointEditComponent, this.#pointListContainer, RenderPosition.AFTERBEGIN);
@@ -47,7 +53,7 @@ export default class NewPointPresenter {
     this.#handleDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      { id: crypto.randomUUID(), isFavorite: false, ...point },
+      {isFavorite: false, ...point },
       offer,
       dest,
     );
@@ -72,4 +78,23 @@ export default class NewPointPresenter {
       this.destroy();
     }
   };
+
+  setSaving() {
+    this.#pointEditComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#pointEditComponent.shake(resetFormState);
+  }
 }
