@@ -5,7 +5,6 @@ import he from '../../node_modules/he';
 export const editPointTemplate = (data, allOffers, allDests) => {
   const point = data.state.point || {};
   const dest = data.dest || {};
-
   const { isDeleting, isSaving, isDisabled } = data.state;
   const { dateFrom = '', dateTo = '', type = '', basePrice = '' } = point;
   const { description = '', name = '', pictures = [] } = dest;
@@ -124,7 +123,11 @@ export const editPointTemplate = (data, allOffers, allDests) => {
           <section class="event__section  event__section--destination">
             <h3 class="event__section-title  event__section-title--destination">Destination</h3>
             <p class="event__destination-description">${description}</p>
-            ${pictures.length > 0 ? `<img src="${pictures[0].src}" alt="Picture">` : ''}
+              ${pictures.length > 0 ? `<div class="event__photos-container">
+                <div class="event__photos-tape">
+                    ${pictures.map((el) => `<img class="event__photo" src="${el.src}" alt="Event photo">`).join('')}
+                  </div>
+                </div>` : ''}
           </section>
         </section>
       </form>
