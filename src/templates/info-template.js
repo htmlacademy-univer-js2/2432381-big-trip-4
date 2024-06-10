@@ -1,11 +1,11 @@
 import { normalizeDate, normalizeDay } from '../utils/task';
 
-function createMainInfo(points = { points: [] }, offers, dests) {
+function createMainInfo(points = { points: [] }, offers, destinations) {
   const pointDestinations = points.points.map((point) => point.destination);
-  dests = dests.filter((dest) => pointDestinations.includes(dest.id));
-  const firstDest = dests.length > 0 ? dests[0].name : '';
-  const midDest = points.points.length > 3 || points.points.length === 1 || dests.length < 2 ? '...' : dests[1].name || '';
-  const lastDest = dests.length > 0 ? dests[dests.length - 1].name : '';
+  destinations = destinations.filter((dest) => pointDestinations.includes(dest.id));
+  const firstDest = destinations.length > 0 ? destinations[0].name : '';
+  const midDest = points.points.length > 3 || points.points.length === 1 || destinations.length < 2 ? '...' : destinations[1].name || '';
+  const lastDest = destinations.length > 0 ? destinations[destinations.length - 1].name : '';
 
   const pricesArr = [];
 
@@ -17,7 +17,7 @@ function createMainInfo(points = { points: [] }, offers, dests) {
     pricesArr.push(of.price);
   });
 
-  const totalPrice = pricesArr.reduce((x, y) => x + y, 0);
+  const totalPrice = pricesArr.filter((el) => el !== undefined).reduce((x, y) => x + y, 0);
 
   const lastDate = points.points.length > 0 ? normalizeDay(points.points[points.points.length - 1].dateTo, points.points[0].dateTo) : '';
   const firstDate = points.points.length > 0 ? normalizeDate(points.points[0].dateFrom) : '';

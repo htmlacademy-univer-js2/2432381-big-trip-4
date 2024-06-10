@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import { editPointTemplate } from '../templates/edit-point-template';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
@@ -5,20 +6,20 @@ import 'flatpickr/dist/flatpickr.min.css';
 
 export default class EditPointView extends AbstractStatefulView {
   #offers = null;
-  #dest = null;
+  #destination = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
   #handleFormDelete = null;
   #datepickerFrom = null;
   #datepickerTo = null;
-  #allDests = null;
+  #allDestinations = null;
   #allOffers = null;
 
   constructor({ point, offer, destination, onFormSubmit, onFormClose, onDeleteClick, allDestinations, allOffers }) {
     super();
     this.#offers = offer;
-    this.#dest = destination;
-    this.#allDests = allDestinations;
+    this.#destination = destination;
+    this.#allDestinations = allDestinations;
     this.#allOffers = allOffers;
     this._setState(EditPointView.parsePointToState({point}));
     this.#handleFormSubmit = onFormSubmit;
@@ -44,8 +45,8 @@ export default class EditPointView extends AbstractStatefulView {
     return editPointTemplate({
       state: this._state,
       offers: this.#offers,
-      dest: this.#dest,
-    }, this.#allOffers, this.#allDests);
+      dest: this.#destination,
+    }, this.#allOffers, this.#allDestinations);
 
   }
 
@@ -64,7 +65,17 @@ export default class EditPointView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state));
+    if (this._state && this._state.point) {
+      const { basePrice, dateFrom, dateTo, destination, type } = this._state.point;
+
+      if (basePrice !== undefined && dateFrom !== undefined && dateTo !== undefined && destination !== undefined && type !== undefined) {
+        this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state));
+      } else {
+        alert('Enter the whole necessary data');
+      }
+    } else {
+      alert('Form state is not properly initialized.');
+    }
   };
 
   #formcloseHandler = (evt) => {
@@ -74,8 +85,8 @@ export default class EditPointView extends AbstractStatefulView {
 
   #destinationInputHandler = (evt) => {
     evt.preventDefault();
-    const selectedDest = this.#allDests.find((d) => d.name === evt.target.value);
-    this.#dest = selectedDest;
+    const selectedDest = this.#allDestinations.find((d) => d.name === evt.target.value);
+    this.#destination = selectedDest;
     const selectedDestId = (selectedDest) ? selectedDest.id : '';
     this.updateElement({
       point: {
@@ -108,12 +119,16 @@ export default class EditPointView extends AbstractStatefulView {
 
   #changeEventPriceHandler = (evt) => {
     evt.preventDefault();
-    this._setState({
-      point: {
-        ...this._state.point,
-        basePrice: Number(evt.target.value),
-      }
-    });
+    if(evt.target.value >= 0) {
+      this._setState({
+        point: {
+          ...this._state.point,
+          basePrice: Number(evt.target.value),
+        }
+      });
+    } else {
+      alert('Error: Price cannot be negative. Please enter a valid price.');
+    }
   };
 
   static parsePointToState(point) {
@@ -154,7 +169,6 @@ export default class EditPointView extends AbstractStatefulView {
   };
 
   #setDatepickerFrom() {
-    //if (this._state.point && this._state.point.dateFrom) {
     this.#datepickerFrom = flatpickr(
       this.element.querySelector('[name="event-start-time"]'),
       {
@@ -164,11 +178,9 @@ export default class EditPointView extends AbstractStatefulView {
         onChange: this.#DateFromChangeHandler,
       },
     );
-    //}
   }
 
   #setDatepickerTo() {
-    //if (this._state.point && this._state.point.dateTo) {
     this.#datepickerTo = flatpickr(
       this.element.querySelector('[name="event-end-time"]'),
       {
@@ -178,7 +190,6 @@ export default class EditPointView extends AbstractStatefulView {
         onChange: this.#DateToChangeHandler,
       },
     );
-    //}
   }
 
   #formDeleteClickHandler = (evt) => {

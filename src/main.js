@@ -15,7 +15,6 @@ const END_POINT = 'https://21.objects.htmlacademy.pro/big-trip';
 
 const bodyElement = document.querySelector('body');
 const headerElement = bodyElement.querySelector('.page-header');
-//const mainElement = bodyElement.querySelector('.page-main');
 const siteListFilter = headerElement.querySelector('.trip-controls__filters');
 const tripMain = headerElement.querySelector('.trip-main');
 const eventsList = bodyElement.querySelector('.trip-events');
@@ -34,7 +33,7 @@ const offersModel = new OffersModel({
 });
 
 const boardPresenter = new BoardPresenter({
-  container: eventsList,
+  boardContainer: eventsList,
   headerContainer: tripMain,
   pointsModel,
   offersModel,
@@ -72,9 +71,6 @@ const awaiter = async () => {
   ]);
   boardPresenter.init();
   pointsModel.init();
-  //pointsModel.init();
-  //filterPresenter.init();
-  //boardPresenter.init();
 };
 awaiter();
 

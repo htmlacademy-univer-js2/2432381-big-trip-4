@@ -4,16 +4,16 @@ import AbstractView from '../framework/view/abstract-view';
 export default class MainInfo extends AbstractView {
   #points = null;
   #offers = null;
-  #dests = null;
+  #destinations = null;
 
-  constructor({ points, offers, dests }) {
+  constructor({ points, offers, destinations }) {
     super();
     this.#points = points;
     this.#offers = offers;
-    this.#dests = dests;
+    this.#destinations = destinations;
   }
 
   get template() {
-    return createMainInfo({ points: this.#points }, this.#offers, this.#dests);
+    return createMainInfo({ points: this.#points }, this.#offers, this.#destinations);
   }
 }
