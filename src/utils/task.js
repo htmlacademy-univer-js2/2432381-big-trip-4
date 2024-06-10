@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import duration from 'dayjs/plugin/duration';
 
 dayjs.extend(utc);
+dayjs.extend(duration);
 
 const DAY_DATE_FORMAT = 'MMM D';
 const DAY_FORMAT = 'D';
@@ -29,21 +31,29 @@ function normalizeLongDayDate (date) {
   return date ? dayjs(date).format(LONG_DAY_DATE_FROMAT) : '';
 }
 
-export const timeDifference = (dateTo, dateFrom) => {
+export const getTimeDifference = (dateTo, dateFrom) => {
 
-  const dif = dayjs(dateTo).diff(dayjs(dateFrom), 'm');
-  const hh = Math.floor(dif / 60);
-  const dd = Math.floor(hh / 24);
-  const mm = dif % 60;
+  const timeDifference = dayjs.duration(dayjs(dateTo).diff(dayjs(dateFrom)));
 
-  if (dif < 60) {
-    return `${dif + 1}M`;
-  } else if (dif >= 60 && dif < 1440) {
-    return `${hh}H ${(mm + 1)}M`;
-  } else if (dif >= 1440) {
-    return `${dd}D ${(hh % 24)}H ${(mm + 1)}M`;
+  const timeDifferenceInMinutes = timeDifference.asMinutes();
+  const timeDifferenceInHours = timeDifference.asHours();
+  const timeDifferenceInDays = timeDifference.asDays();
+
+  if (timeDifferenceInHours < 1) {
+    // если разница меньше часа, то возвращаем разницу в минутах
+    return `${Math.floor(timeDifferenceInMinutes)}M`;
+  } else if (timeDifferenceInDays < 1) {
+    // если разница меньше дня, то возвращаем разницу в часах и минутах
+    const hours = Math.floor(timeDifferenceInHours);
+    const minutes = Math.floor(timeDifferenceInMinutes % 60);
+    return `${hours}H ${minutes}M`;
+  } else {
+    // если разница больше дня, то возвращаем разницу в днях, часах и минутах
+    const days = Math.floor(timeDifferenceInDays);
+    const hours = Math.floor(timeDifferenceInHours % 24);
+    const minutes = Math.floor(timeDifferenceInMinutes % 60);
+    return `${days}D ${hours}H ${minutes}M`;
   }
-  return dif;
 };
 
 export const getTotalOffersPrice = (offers) => {
@@ -75,7 +85,7 @@ function presentFilterPoints (point) {
   return (dayjs().isAfter(point.dateFrom) && dayjs().isBefore(point.dateTo));
 }
 
-function sortPointsArrByDay (a, b) {
+function sortPointsByDay (a, b) {
   const dateA = dayjs(a.dateFrom);
   const dateB = dayjs(b.dateFrom);
 
@@ -88,11 +98,11 @@ function sortPointsArrByDay (a, b) {
   }
 }
 
-function sortPointsArrByPrice (a, b) {
+function sortPointsByPrice (a, b) {
   return b.basePrice - a.basePrice;
 }
 
-function sortPointsArrByTime (a, b) {
+function sortPointsByTime (a, b) {
   const ft = dayjs(b.dateTo).diff(dayjs(b.dateFrom), 'm');
   const st = dayjs(a.dateTo).diff(dayjs(a.dateFrom), 'm');
   return ft - st;
@@ -102,4 +112,4 @@ function isDatesEqual(dateA, dateB) {
   return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateA, 'D');
 }
 
-export { sortPointsArrByDay, normalizeDate, normalizeHour, normalizeLongDayDate, normalizeDay, futureFilterPoints, presentFilterPoints, NOW, pastFilterPoints, sortPointsArrByPrice, sortPointsArrByTime, isDatesEqual };
+export { sortPointsByDay, normalizeDate, normalizeHour, normalizeLongDayDate, normalizeDay, futureFilterPoints, presentFilterPoints, NOW, pastFilterPoints, sortPointsByPrice, sortPointsByTime, isDatesEqual };

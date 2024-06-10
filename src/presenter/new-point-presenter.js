@@ -8,14 +8,14 @@ export default class NewPointPresenter {
   #handleDestroy = null;
 
   #pointEditComponent = null;
-  #allDests = null;
+  #allDestinations = null;
   #allOffers = null;
 
-  constructor({pointListContainer, onDataChange, onDestroy, allDests, allOffers}) {
+  constructor({pointListContainer, onDataChange, onDestroy, allDestinations, allOffers}) {
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
-    this.#allDests = allDests;
+    this.#allDestinations = allDestinations;
     this.#allOffers = allOffers;
   }
 
@@ -28,7 +28,7 @@ export default class NewPointPresenter {
       onFormSubmit: this.#handleFormSubmit,
       onDeleteClick: this.#handleDeleteClick,
       onFormClose: this.#handleFormCloseClick,
-      allDestinations: this.#allDests,
+      allDestinations: this.#allDestinations,
       allOffers: this.#allOffers,
     });
 
