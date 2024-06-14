@@ -8,7 +8,7 @@ dayjs.extend(duration);
 const DAY_DATE_FORMAT = 'MMM D';
 const DAY_FORMAT = 'D';
 const HOUR_DATE_FORMAT = 'HH:mm';
-const LONG_DAY_DATE_FROMAT = 'DD/MM/YY HH:mm';
+const LONG_DAY_DATE_FORMAT = 'DD/MM/YY HH:mm';
 const NOW = dayjs();
 
 
@@ -28,7 +28,7 @@ function normalizeHour (date) {
 }
 
 function normalizeLongDayDate (date) {
-  return date ? dayjs(date).format(LONG_DAY_DATE_FROMAT) : '';
+  return date ? dayjs(date).format(LONG_DAY_DATE_FORMAT) : '';
 }
 
 export const getTimeDifference = (dateTo, dateFrom) => {

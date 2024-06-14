@@ -50,18 +50,26 @@ export default class EditPointView extends AbstractStatefulView {
 
   }
 
-  #changeEventTypeHandler = (evt) => {
-    const type = evt.target.value;
-    this.updateElement({
-      point: {
-        ...this._state.point,
-        type: type,
-        offers: []
-      },
-    });
-  };
-
   reset = (point) => this.updateElement({point});
+
+  static parsePointToState(point) {
+    return {
+      ...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
+    };
+  }
+
+  static parseStateToPoint(state) {
+    const point = {...state.point};
+
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
+    return point;
+  }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
@@ -81,6 +89,22 @@ export default class EditPointView extends AbstractStatefulView {
   #formcloseHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormClose();
+  };
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormDelete(EditPointView.parseStateToPoint(this._state));
+  };
+
+  #changeEventTypeHandler = (evt) => {
+    const type = evt.target.value;
+    this.updateElement({
+      point: {
+        ...this._state.point,
+        type: type,
+        offers: []
+      },
+    });
   };
 
   #destinationInputHandler = (evt) => {
@@ -131,25 +155,6 @@ export default class EditPointView extends AbstractStatefulView {
     }
   };
 
-  static parsePointToState(point) {
-    return {
-      ...point,
-      isDisabled: false,
-      isSaving: false,
-      isDeleting: false,
-    };
-  }
-
-  static parseStateToPoint(state) {
-    const point = {...state.point};
-
-    delete point.isDisabled;
-    delete point.isSaving;
-    delete point.isDeleting;
-
-    return point;
-  }
-
   #DateFromChangeHandler = ([userDateFrom]) => {
     this.updateElement({
       point: {
@@ -191,9 +196,4 @@ export default class EditPointView extends AbstractStatefulView {
       },
     );
   }
-
-  #formDeleteClickHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleFormDelete(EditPointView.parseStateToPoint(this._state));
-  };
 }

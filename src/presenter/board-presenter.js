@@ -213,10 +213,8 @@ export default class BoardPresenter {
           this.#newPointPresenter.setAborting();
           break;
         case UserAction.DELETE_POINT:
-          if(update !== undefined){
-            this.#pointPresenter.get(update.id).setAborting();
-            break;
-          }
+          this.#pointPresenter.get(update.id).setAborting();
+          break;
       }
     }
     this.#uiBlocker.unblock();
@@ -286,7 +284,7 @@ export default class BoardPresenter {
 
   #findDestination(point) {
     const destination = this.destinations.find((destination) => destination.id === point.destination) ||
-                        this.#allDestinations.find((destination) => destination.id === point.destination);
+      this.#allDestinations.find((destination) => destination.id === point.destination);
     return destination;
   }
 

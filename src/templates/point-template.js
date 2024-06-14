@@ -1,9 +1,8 @@
 import { normalizeDate, normalizeHour, getTimeDifference } from '../utils/task';
 
-function createPointTemplate(point, offer) {
+function createPointTemplate(point, offer, destination) {
   const { dateFrom, dateTo, type, basePrice, isFavorite } = point || {};
   const offerElements = [];
-
   if (offer && offer.offers) {
     for (const singleOffer of offer.offers) {
       offerElements.push(`
@@ -29,7 +28,7 @@ function createPointTemplate(point, offer) {
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src='img/icons/${type}.png' alt="Event type icon">
         </div>
-        <h3 class="event__title">${type}</h3>
+        <h3 class="event__title">${type} ${destination.name}</h3>
         <div class="event__schedule">
           <p class="event__time">
             <time class="event__start-time" datetime="2019-03-18T10:30">${formattedDateFrom}</time>

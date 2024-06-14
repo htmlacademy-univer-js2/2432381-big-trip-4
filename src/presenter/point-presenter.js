@@ -43,6 +43,7 @@ export default class PointPresenter {
     this.#pointComponent = new PointView({
       point: this.#point,
       offer: this.#offer,
+      destination: this.#destination,
       onEditClick: this.#handleEditClick,
       onFavoriteClick: this.#handleFavoriteClick,
     });
@@ -126,7 +127,6 @@ export default class PointPresenter {
       offer,
       dest,
     );
-    //this.#replaceFormToPoint();
   };
 
   #handleFavoriteClick = () => {

@@ -4,14 +4,16 @@ import AbstractView from '../framework/view/abstract-view';
 export default class PointView extends AbstractView {
   #point = null;
   #offer = null;
+  #destination = null;
 
   #handleEditClick = null;
   #handleFavoriteClick = null;
 
-  constructor({point, offer, onEditClick, onFavoriteClick}){
+  constructor({point, offer, destination, onEditClick, onFavoriteClick}){
     super();
     this.#point = point;
     this.#offer = offer;
+    this.#destination = destination;
     this.#handleEditClick = onEditClick;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
 
@@ -20,7 +22,7 @@ export default class PointView extends AbstractView {
   }
 
   get template() {
-    return createPointTemplate(this.#point, this.#offer);
+    return createPointTemplate(this.#point, this.#offer, this.#destination);
   }
 
   #editClickHandler = (evt) => {

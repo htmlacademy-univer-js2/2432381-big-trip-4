@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import {RenderPosition, render, remove } from '../framework/render';
 import { UpdateType, UserAction } from '../mock/const';
 import EditPointView from '../view/edit-point-view';
@@ -62,10 +63,6 @@ export default class NewPointPresenter {
 
   #handleDeleteClick = () => {
     this.destroy();
-    this.#handleDataChange(
-      UserAction.DELETE_POINT,
-      UpdateType.MINOR,
-    );
   };
 
   #handleFormCloseClick = () => {
